@@ -47,3 +47,6 @@ package/
 .codex*
 .claude
 .mimocode
+
+# 工具
+tools
