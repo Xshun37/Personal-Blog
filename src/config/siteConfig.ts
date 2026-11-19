@@ -54,12 +54,7 @@ export const siteConfig: SiteConfig = {
 	description: "",
 
 	// 站点关键词
-	keywords: [
-		"生物学",
-		"信息学",
-		"ACGN",
-		"博客",
-	],
+	keywords: ["生物学", "信息学", "ACGN", "博客"],
 
 	// 主题色
 	themeColor: {
