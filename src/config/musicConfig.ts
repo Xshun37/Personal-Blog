@@ -18,7 +18,7 @@ export const musicPlayerConfig: MusicPlayerConfig = {
 	playMode: "list",
 
 	// 是否显启用歌词
-	showLyrics: false,
+	showLyrics: true,
 
 	// Meting API 配置
 	meting: {
@@ -42,17 +42,38 @@ export const musicPlayerConfig: MusicPlayerConfig = {
 
 	// 本地音乐配置（当 mode 为 'local' 时使用）
 	// 1. 支持传入歌词文件的路径
-	// lrc: "/assets/music/lrc/使一颗心免于哀伤-哼唱.lrc",
+	// lrc: "/assets/music/lrc/summer-time-record.lrc",
 	// 2. 或者直接填入歌词字符串内容
 	// lrc: "[00:00.00]歌词内容...",
 	local: {
 		playlist: [
 			{
-				name: "使一颗心免于哀伤",
-				artist: "知更鸟 / HOYO-MiX / Chevy",
-				url: "/assets/music/使一颗心免于哀伤-哼唱.mp3",
-				cover: "/assets/music/cover/109951169585655912.webp",
-				lrc: "",
+				name: "空気力学少女と少年の詩",
+				artist: "はな",
+				url: "/assets/music/kuuki-rikigaku-shoujo-to-shounen-no-uta.mp3",
+				cover: "/assets/music/cover/kuuki-rikigaku.webp",
+				lrc: "/assets/music/lrc/kuuki-rikigaku.lrc",
+			},
+			{
+				name: "櫻ノ詩",
+				artist: "はな",
+				url: "/assets/music/sakura-no-uta.mp3",
+				cover: "/assets/music/cover/sakura-no-uta.webp",
+				lrc: "/assets/music/lrc/sakura-no-uta.lrc",
+			},
+			{
+				name: "ナグルファルの船上にて",
+				artist: "monet",
+				url: "/assets/music/naglfar-no-senjou-nite.mp3",
+				cover: "/assets/music/cover/naglfar.webp",
+				lrc: "/assets/music/lrc/naglfar.lrc",
+			},
+			{
+				name: "サマータイムレコード",
+				artist: "Leo/need feat. 星乃一歌・天馬咲希・巡音ルカ",
+				url: "/assets/music/summer-time-record.mp3",
+				cover: "/assets/music/cover/summer-time-record.webp",
+				lrc: "/assets/music/lrc/summer-time-record.lrc",
 			},
 		],
 	},

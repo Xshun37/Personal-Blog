@@ -8,7 +8,9 @@ export const spineModelConfig: SpineModelConfig = {
 	// Spine模型配置
 	model: {
 		// Spine模型文件路径
-		path: "/pio/models/spine/firefly/1310.json",
+		// 原示例流萤模型 public/pio/models/spine/firefly/ 已移除；
+		// 启用看板娘前请把模型放到 public/pio/models/spine/ 下并填写自己的模型 JSON 路径
+		path: "/pio/models/spine/your-model/model.json",
 		// 模型缩放比例
 		scale: 1.0,
 		// X轴偏移

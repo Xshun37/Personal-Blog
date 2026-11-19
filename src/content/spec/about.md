@@ -1,27 +1,25 @@
-# 关于我 / About Me
+﻿# 关于我 / About Me
 
-你好！我是 **夏叶** ，一个在数字世界中默默无闻的一片叶子。
+你好，我是 **Xshun**（读音「小顺」）。
 
-## 🛠️ 关于本站
+平时主要折腾生物学、信息学和各种 ACGN 相关的东西，也算是个喜欢记录的人——所以有了这个博客。
 
-这个网站使用 **Astro** 框架构建，采用了 [Firefly](https://github.com/CuteLeaf/Firefly) 模板，Firefly 是基于 [Fuwari](https://github.com/saicaca/fuwari) 的二次开发。
+## 关于本站
 
-**Firefly** 是一款基于 Astro 框架和 Fuwari 模板开发的清新美观且现代化个人博客主题模板，专为技术爱好者和内容创作者设计。该主题融合了现代 Web 技术栈，提供了丰富的功能模块和高度可定制的界面，让您能够轻松打造出专业且美观的个人博客网站。
+这里会放一些：
 
+- 生物 / 信息学相关的笔记和想法
+- ACGN 相关的碎碎念和收藏
+- 偶尔的技术折腾记录
 
-**🖥️在线预览： [Firefly - Demo site](https://firefly.cuteleaf.cn/)**
+建站用的是 **Astro**。
 
-**📝Firefly使用文档： [https://docs-firefly.cuteleaf.cn](https://docs-firefly.cuteleaf.cn/)**
+## 找到我
 
-**⭐Firefly开源地址：[https://github.com/CuteLeaf/Firefly](https://github.com/CuteLeaf/Firefly)** 
-
-**⭐Fuwari开源地址：[https://github.com/saicaca/fuwari](https://github.com/saicaca/fuwari)**
-
-::github{repo="CuteLeaf/Firefly"}
-
-::github{repo="saicaca/fuwari"}
+- GitHub：[Xshun37](https://github.com/Xshun37)
+- 哔哩哔哩：[311037245](https://space.bilibili.com/311037245)
+- 邮箱：[KochiyaSanae37@outlook.com](mailto:KochiyaSanae37@outlook.com)
 
 ---
 
-*感谢你的来访！希望在这里能找到对你有用的内容！*
-
+*感谢来访，希望这里有你感兴趣的内容。*

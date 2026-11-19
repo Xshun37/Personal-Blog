@@ -31,14 +31,15 @@ export const sponsorConfig: SponsorConfig = {
 			description: "使用 支付宝 扫码打赏",
 			enabled: true,
 		},
-		{
-			name: "微信",
-			icon: "fa7-brands:weixin",
-			qrCode: "/assets/images/sponsor/wechat.png",
-			link: "",
-			description: "使用 微信 扫码打赏",
-			enabled: true,
-		},
+		// 原微信收款码内嵌了流萤图片，已移除；换成自己的收款码后可重新启用
+		// {
+		// 	name: "微信",
+		// 	icon: "fa7-brands:weixin",
+		// 	qrCode: "/assets/images/sponsor/wechat.png",
+		// 	link: "",
+		// 	description: "使用 微信 扫码打赏",
+		// 	enabled: true,
+		// },
 		{
 			name: "ko-fi",
 			icon: "simple-icons:kofi",
@@ -62,8 +63,8 @@ export const sponsorConfig: SponsorConfig = {
 		// 示例：已实名打赏者
 		{
 			name: "夏叶",
-			avatar:
-				"https://weavatar.com/avatar/d252655d40d6874417a720bad0a6c5f77f8f6a1fd2f882f8f338402dc37e4190?s=640",
+			// 原头像为流萤相关图片，已移除（留空时显示名字首字占位）
+			avatar: "",
 			amount: "¥50",
 			date: "2025-10-01",
 		},

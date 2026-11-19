@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1254" height="1254" viewBox="0 0 1254 1254" role="img" aria-labelledby="title desc">
+  <title id="title">Sanae monochrome geometric X logo</title>
+  <desc id="desc">A smooth vector redraw with an X monogram, frog ornament and white snake ribbon, on a transparent background.</desc>
+  <defs>
+    <linearGradient id="darkLeft" x1="150" y1="650" x2="490" y2="1090" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#151515"/><stop offset=".55" stop-color="#303030"/><stop offset="1" stop-color="#1b1b1b"/>
+    </linearGradient>
+    <linearGradient id="darkRight" x1="758" y1="400" x2="1110" y2="1100" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#151515"/><stop offset=".55" stop-color="#292929"/><stop offset="1" stop-color="#191919"/>
+    </linearGradient>
+    <linearGradient id="silverLeft" x1="170" y1="790" x2="389" y2="1070" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#bdbdbd"/><stop offset="1" stop-color="#d2d2d2"/>
+    </linearGradient>
+    <linearGradient id="silverRight" x1="741" y1="760" x2="900" y2="1100" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#c7c7c7"/><stop offset="1" stop-color="#959595"/>
+    </linearGradient>
+    <linearGradient id="frogGrey" x1="729" y1="350" x2="912" y2="410" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#d4d4d4"/><stop offset="1" stop-color="#b7b7b7"/>
+    </linearGradient>
+    <linearGradient id="snakeWhite" x1="744" y1="728" x2="1030" y2="847" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff"/><stop offset=".72" stop-color="#fff"/><stop offset="1" stop-color="#eeeeef"/>
+    </linearGradient>
+  </defs>
+  <path fill="#646464" d="M 589.0 129.2 L 653.9 129.2 L 699.3 135.3 L 733.5 143.9 L 758.0 152.5 L 811.9 178.2 L 857.2 207.6 L 909.3 249.8 L 909.3 254.7 L 920.3 274.3 L 942.3 302.5 L 965.6 339.2 L 992.5 391.9 L 1006.0 426.2 L 1010.9 433.5 L 1033.0 502.1 L 1051.3 571.9 L 1066.0 644.1 L 1077.0 717.6 L 1061.7 701.1 L 1053.2 698.6 L 1044.6 701.1 L 1037.9 707.8 L 1035.4 716.4 L 1036.6 722.5 L 1105.2 856.0 L 1117.5 882.9 L 1134.6 929.5 L 1144.4 967.4 L 1150.5 1007.9 L 1149.3 1047.0 L 1141.9 1074.0 L 1128.5 1096.0 L 1113.2 1110.1 L 1086.2 1126.0 L 1049.5 1144.4 L 983.4 1170.1 L 935.6 1183.6 L 908.7 1188.5 L 977.9 1115.6 L 998.7 1088.7 L 1014.6 1064.2 L 1017.0 1055.6 L 1014.6 1045.8 L 1005.4 1037.9 L 993.2 1037.9 L 897.6 1075.8 L 827.8 1111.3 L 778.9 1145.6 L 755.6 1166.4 L 736.0 1187.3 L 698.6 1147.5 L 676.6 1119.3 L 663.1 1098.5 L 653.3 1078.9 L 646.0 1058.1 L 641.1 1033.6 L 641.1 990.7 L 644.8 961.3 L 652.1 930.7 L 649.7 919.7 L 642.9 912.9 L 634.3 910.5 L 623.3 914.2 L 601.3 930.1 L 597.6 930.1 L 557.2 898.3 L 545.0 893.4 L 536.4 895.8 L 529.6 902.5 L 521.1 934.4 L 502.7 967.4 L 480.0 992.5 L 453.1 1013.4 L 433.5 1024.4 L 407.8 1035.4 L 369.8 1047.7 L 293.9 1064.8 L 254.7 1078.3 L 220.4 1093.0 L 188.6 1110.1 L 162.9 1127.3 L 142.1 1144.4 L 120.0 1167.7 L 118.2 1165.8 L 115.7 1146.2 L 112.1 1094.8 L 113.3 1038.5 L 118.2 1004.2 L 117.0 988.3 L 109.0 979.1 L 100.4 976.6 L 89.4 980.3 L 67.4 995.0 L 63.1 995.6 L 102.3 949.1 L 132.9 907.4 L 156.1 871.9 L 167.2 853.6 L 183.1 819.3 L 205.1 760.5 L 216.1 707.8 L 228.4 605.0 L 227.2 595.2 L 219.2 586.0 L 210.6 583.5 L 204.5 584.8 L 195.3 592.7 L 137.8 676.0 L 128.0 687.0 L 136.5 646.6 L 152.5 590.3 L 172.1 533.9 L 196.5 475.1 L 235.7 399.2 L 273.7 340.4 L 297.0 309.8 L 322.7 280.4 L 372.3 233.3 L 400.4 210.0 L 431.1 188.0 L 484.9 157.4 L 533.9 139.0 L 560.9 132.9 L 589.0 129.2 Z"/>
+  <g id="hair-back">
+    <path fill="url(#darkLeft)" d="M246 519C218 619 228 708 197 788C166 868 126 924 119 1003C111 1057 112 1110 120 1168C150 1115 207 1086 281 1068C355 1051 426 1040 476 996C527 951 534 902 528 862L410 739L333 625Z"/>
+    <path fill="url(#darkRight)" d="M711 346L898 251C984 336 1046 490 1077 718L992 612C1034 746 1115 846 1140 952C1165 1046 1143 1094 1105 1115L909 1189C952 1147 1015 1095 1044 1019C938 1062 819 1093 737 1187C674 1124 639 1074 642 1009C643 931 677 857 721 772L766 590L753 450Z"/>
+    <path fill="url(#silverLeft)" d="M245 632C230 768 156 892 64 997L128 957C184 925 231 882 273 832L285 755L257 699Z"/>
+    <path fill="url(#silverLeft)" d="M347 709L411 803C414 899 396 1006 355 1049C257 1072 174 1105 120 1168C149 1088 213 1032 277 992C309 971 338 950 365 927L329 799Z"/>
+    <path fill="url(#silverRight)" d="M862 712C820 800 821 903 797 975C782 1021 756 1055 732 1079C691 1020 695 943 713 879C739 800 802 751 862 712Z"/>
+    <path fill="url(#silverRight)" d="M1049 895C1096 951 1140 1045 1105 1115C1045 1151 976 1176 909 1189C991 1111 1069 1025 1049 895Z"/>
+  </g>
+  <path id="face" fill="#fdfdfd" d="M386 666L452 575L499 655L558 484L519 745L666 617L650 676L766 591L765 671L815 626L804 697L761 821L600 931L435 804Z"/>
+  <path id="side-fringe" fill="#bcbcbc" d="M759 495L766 591L687 648Z"/>
+  <path id="hair-front" fill="#646464" d="M129 688C157 551 229 366 353 253C437 175 518 131 609 130C733 126 820 173 910 251L895 293L711 348C745 392 756 448 759 495L687 648L650 676L666 617L519 745L556 486L575 437L255 828L249 598L234 624L246 522Z"/>
+  <path id="right-edge-plane" fill="#969696" d="M1024 474C1046 555 1064 638 1077 718L992 612L1002 481Z"/>
+  <g id="eyes" fill="#202020">
+    <path d="M402 669L511 674L511 727L475 727L465 693L428 693Z"/>
+    <path d="M655 678L790 678L770 695L734 695L719 728L678 728L678 695Z"/>
+  </g>
+  <path id="x-monogram" fill="#f3f3f3" d="M265 503L359 410L316 364L354 364L378 389L491 303L476 326L396 410L451 474L400 458L375 431L350 455Z"/>
+  <g id="frog-ornament">
+    <path fill="#fcfcfc" d="M711 348L747 309L736 282L754 253L784 251L802 278L857 278L875 253L907 253L924 280L913 309L944 345L930 360L875 405L783 405L721 358Z"/>
+    <path fill="url(#frogGrey)" d="M721 358L830 331L930 360L875 405L783 405Z"/>
+    <path fill="#656565" d="M761 282L782 272L789 291L762 305Z"/>
+    <path fill="#656565" d="M880 273L900 283L897 305L873 292Z"/>
+  </g>
+  <g id="hair-bands" fill="#d5d5d5">
+    <path d="M812 441L987 382L1002 417L812 486Z"/>
+    <path d="M812 500L1010 432L1024 474L812 549Z"/>
+  </g>
+  <path id="snake-ribbon" fill="url(#snakeWhite)" d="M916 527C858 553 824 592 825 629C827 675 879 701 930 729C965 748 986 772 974 796C959 826 895 840 839 866C766 899 720 942 718 1000C717 1028 723 1056 733 1079C730 1022 762 980 813 946C861 913 919 891 968 862C1014 835 1030 804 1025 768C1021 728 993 702 953 680C909 655 878 638 879 612C879 581 895 552 916 527Z"/>
+</svg>

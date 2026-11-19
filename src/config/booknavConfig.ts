@@ -78,7 +78,7 @@ export const booknavConfig: BooknavGroup[] = [
 				title: "Firefly",
 				url: "https://github.com/CuteLeaf/Firefly",
 				desc: "清晰美观的 Astro 个人博客主题模板",
-				icon: "/favicon/firefly-32.png",
+				icon: "fa7-brands:github",
 				weight: 10,
 			},
 		],
@@ -142,7 +142,7 @@ export const booknavConfig: BooknavGroup[] = [
 				title: "Firefly Docs",
 				url: "https://docs-firefly.cuteleaf.cn",
 				desc: "Firefly 主题模板文档",
-				icon: "https://docs-firefly.cuteleaf.cn/logo.png",
+				icon: "material-symbols:menu-book",
 				weight: 10,
 			},
 			{
