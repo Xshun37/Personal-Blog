@@ -269,7 +269,7 @@ export const LinkPresets: Record<string, NavBarLink> = {
 	About: {
 		name: "关于我",
 		url: "/about/",
-		icon: "material-symbols:person",
+		icon: "material-symbols:info-outline",
 	},
 };
 
