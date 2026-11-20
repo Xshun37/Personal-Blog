@@ -24,6 +24,8 @@ const pages = resolvePageToggles({
 	dynamic: true,
 	// 项目展示页开关
 	projects: true,
+	// 作品集页面开关
+	portfolio: true,
 	// 相册页面开关
 	gallery: true,
 	// 书签导航页面开关

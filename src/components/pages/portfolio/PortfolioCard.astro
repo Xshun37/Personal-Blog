@@ -1,0 +1,34 @@
+---
+import type { CollectionEntry } from "astro:content";
+import ProjectCard from "@/components/pages/projects/ProjectCard.astro";
+import { getPortfolioStatusLabel } from "@/utils/portfolio-utils";
+import {
+	getFileDirFromPath,
+	removeFileExtension,
+	url,
+} from "@/utils/url-utils";
+
+interface Props {
+	entry: CollectionEntry<"portfolio">;
+}
+const { entry } = Astro.props;
+const { title, description, image, tags, published, status, link } = entry.data;
+const id = removeFileExtension(entry.id);
+---
+
+<ProjectCard
+	id={id}
+	title={title}
+	description={description}
+	image={image}
+	basePath={getFileDirFromPath(entry.filePath || "")}
+	tags={tags}
+	published={published}
+	status={status}
+	statusLabel={getPortfolioStatusLabel(status)}
+	link={link}
+	href={url(`/portfolio/${id}/`)}
+	placeholderIcon="material-symbols:palette-outline"
+	class="portfolio-card"
+	searchText={[title, description, ...tags].join(" ")}
+/>

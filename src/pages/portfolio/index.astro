@@ -1,0 +1,113 @@
+---
+import { Icon } from "astro-icon/components";
+import PortfolioCard from "@/components/pages/portfolio/PortfolioCard.astro";
+import { portfolioConfig, siteConfig } from "@/config";
+import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import { getSortedPortfolio } from "@/utils/portfolio-utils";
+import { getProjectStatusMeta } from "@/utils/projects-utils";
+import { url } from "@/utils/url-utils";
+import "@/styles/pages/common.css";
+import "@/styles/pages/card-grid.css";
+
+if (!siteConfig.pages.portfolio) return Astro.redirect(url("/404/"));
+const entries = await getSortedPortfolio();
+const statusFilters = Object.entries(portfolioConfig.statusLabels).map(
+	([key, label]) => ({
+		key,
+		...getProjectStatusMeta(key),
+		label,
+	}),
+);
+const { title, description, emptyText } = portfolioConfig;
+---
+
+<MainGridLayout title={title} description={description}>
+	<portfolio-filter class="page-shell block" data-scroll-content>
+		<header class="card-base page-header">
+			<div class="page-heading">
+				<div class="page-icon" aria-hidden="true"><Icon name="material-symbols:palette-outline" /></div>
+				<div><h2>{title}</h2><p>{description}</p></div>
+			</div>
+			<div class="page-count" aria-label={title}>
+				<Icon name="material-symbols:palette-outline" />
+				<strong>{entries.length}</strong><span>{title}</span>
+			</div>
+			{entries.length > 0 && (
+				<div class="col-span-full min-w-0">
+					<div class="relative mb-3">
+						<Icon name="material-symbols:search" class="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 dark:text-neutral-500 text-lg pointer-events-none" />
+						<input type="search" data-search aria-label="搜索作品" placeholder="搜索作品名称、简介或标签" class="w-full pl-10 pr-4 py-2 rounded-xl border border-(--line-divider) bg-transparent text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder-neutral-500 focus:border-(--primary) focus:ring-1 focus:ring-(--primary) outline-none transition-all duration-200 text-sm" />
+					</div>
+					<div class="flex flex-wrap items-center gap-2" role="group" aria-label="作品状态">
+						<button type="button" data-all data-active aria-pressed="true" class="category-pill px-3 py-1.5 rounded-full text-sm font-medium transition-colors duration-200">全部</button>
+						{statusFilters.map((status) => (
+							<button type="button" data-filter={status.key} aria-pressed="false" class="category-pill px-3 py-1.5 rounded-full text-sm font-medium transition-colors duration-200 inline-flex items-center gap-1.5">
+								<Icon name={status.icon} class="text-base" />
+								{status.label}
+							</button>
+						))}
+					</div>
+				</div>
+			)}
+		</header>
+		{entries.length > 0 ? (
+			<>
+				<div class="card-grid" style="--card-grid-min-width: min(100%, 320px)">
+					{entries.map((entry) => <PortfolioCard entry={entry} />)}
+				</div>
+				<div data-empty hidden role="status" class="flex flex-col items-center justify-center py-12 text-neutral-400 dark:text-neutral-500">
+					<Icon name="material-symbols:search-off-rounded" class="text-4xl mb-3" />
+					<div class="text-sm">没有找到符合条件的作品。</div>
+				</div>
+			</>
+		) : (
+			<div class="card-base flex flex-col items-center justify-center py-16 text-neutral-400 dark:text-neutral-500">
+				<Icon name="material-symbols:palette-outline" class="text-6xl mb-4 opacity-50" />
+				<p class="text-lg">{emptyText}</p>
+			</div>
+		)}
+	</portfolio-filter>
+</MainGridLayout>
+
+<script>
+	class PortfolioFilter extends HTMLElement {
+		private status: string | null = null;
+		connectedCallback() {
+			this.addEventListener("click", this.handleClick);
+			this.addEventListener("input", this.applyFilters);
+			this.applyFilters();
+		}
+		disconnectedCallback() {
+			this.removeEventListener("click", this.handleClick);
+			this.removeEventListener("input", this.applyFilters);
+		}
+		private handleClick = (event: MouseEvent) => {
+			if (!(event.target instanceof Element)) return;
+			const button = event.target.closest<HTMLButtonElement>("button[data-filter], button[data-all]");
+			if (!button) return;
+			this.status = button.dataset.filter ?? null;
+			this.querySelectorAll<HTMLButtonElement>("button[data-filter], button[data-all]").forEach((item) => {
+				item.toggleAttribute("data-active", item === button);
+				item.setAttribute("aria-pressed", String(item === button));
+			});
+			this.applyFilters();
+		};
+		private applyFilters = () => {
+			const query = (this.querySelector<HTMLInputElement>("[data-search]")?.value ?? "").trim().toLocaleLowerCase();
+			let count = 0;
+			this.querySelectorAll<HTMLElement>(".portfolio-card").forEach((card) => {
+				const visible = (this.status === null || card.dataset.status === this.status) &&
+					(card.dataset.searchText ?? "").toLocaleLowerCase().includes(query);
+				card.hidden = !visible;
+				if (visible) count++;
+			});
+			const empty = this.querySelector<HTMLElement>("[data-empty]");
+			if (empty) empty.hidden = count > 0;
+		};
+	}
+	if (!customElements.get("portfolio-filter")) customElements.define("portfolio-filter", PortfolioFilter);
+</script>
+
+<style>
+	:global(.portfolio-card[hidden]), [data-empty][hidden] { display: none; }
+</style>

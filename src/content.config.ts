@@ -115,29 +115,31 @@ const dynamicCollection: ContentCollection<DynamicData> = defineCollection({
 	}),
 });
 
+const projectSchema: ZodType<ProjectData> = z.object({
+	title: z.string(),
+	published: z.date(),
+	draft: z.boolean().optional().default(false),
+	order: z.number().optional(),
+	description: z.string().optional().default(""),
+	image: z.string().optional().default(""),
+	tags: z.array(z.string()).optional().default([]),
+	link: z
+		.array(
+			z.object({
+				label: z.string(),
+				icon: z.string().optional().default(""),
+				value: z.string(),
+			}),
+		)
+		.optional()
+		.default([]),
+	status: z.string().optional().default(""),
+	lang: z.string().optional().default(""),
+});
+
 const projectsCollection: ContentCollection<ProjectData> = defineCollection({
 	loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/projects" }),
-	schema: z.object({
-		title: z.string(),
-		published: z.date(),
-		draft: z.boolean().optional().default(false),
-		order: z.number().optional(),
-		description: z.string().optional().default(""),
-		image: z.string().optional().default(""),
-		tags: z.array(z.string()).optional().default([]),
-		link: z
-			.array(
-				z.object({
-					label: z.string(),
-					icon: z.string().optional().default(""),
-					value: z.string(),
-				}),
-			)
-			.optional()
-			.default([]),
-		status: z.string().optional().default(""),
-		lang: z.string().optional().default(""),
-	}),
+	schema: projectSchema,
 });
 
 const knowledgeCollection: ContentCollection<KnowledgeData> = defineCollection({
@@ -153,13 +155,20 @@ const knowledgeCollection: ContentCollection<KnowledgeData> = defineCollection({
 	}),
 });
 
+const portfolioCollection: ContentCollection<ProjectData> = defineCollection({
+	loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/portfolio" }),
+	schema: projectSchema,
+});
+
 export const collections: {
+	portfolio: typeof portfolioCollection;
 	knowledge: typeof knowledgeCollection;
 	dynamic: typeof dynamicCollection;
 	posts: typeof postsCollection;
 	spec: typeof specCollection;
 	projects: typeof projectsCollection;
 } = {
+	portfolio: portfolioCollection,
 	knowledge: knowledgeCollection,
 	dynamic: dynamicCollection,
 	posts: postsCollection,

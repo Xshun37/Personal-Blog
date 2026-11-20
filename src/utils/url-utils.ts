@@ -97,12 +97,13 @@ export function url(path: string): string {
 	return joinUrl("", import.meta.env.BASE_URL, path);
 }
 
-// 内容详情页路径模式：文章(/posts/、/post/) 与 项目详情(/projects/<slug>/)
+// 内容详情页路径模式：文章、项目与作品集详情
 // 用正则而非 includes("/projects/")，是为了不把 /projects/ 列表页误判成详情页
 const CONTENT_DETAIL_PATH_PATTERNS = [
 	/\/posts\/.+/,
 	/\/post\/.+/,
 	/\/projects\/.+/,
+	/\/portfolio\/.+/,
 ];
 
 /**

@@ -1,0 +1,23 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
+import ProjectDetail from "@/components/pages/projects/ProjectDetail.astro";
+import { portfolioConfig } from "@/config";
+import {
+	getPortfolioStatusLabel,
+	getSortedPortfolio,
+} from "@/utils/portfolio-utils";
+import { removeFileExtension, url } from "@/utils/url-utils";
+
+export const getStaticPaths = (async () => {
+	const entries = await getSortedPortfolio();
+	return entries.map((entry) => ({
+		params: { slug: removeFileExtension(entry.id) },
+		props: { entry },
+	}));
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { entry } = Astro.props;
+---
+
+<ProjectDetail entry={entry} backHref={url("/portfolio/")} backLabel={`返回${portfolioConfig.title}`} statusLabel={getPortfolioStatusLabel(entry.data.status)} />

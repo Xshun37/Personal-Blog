@@ -17,7 +17,12 @@ interface Props {
 	tags?: string[];
 	published?: Date;
 	status?: string;
+	statusLabel?: string;
 	link?: { label: string; icon: string; value: string }[];
+	href?: string;
+	placeholderIcon?: string;
+	class?: string;
+	searchText?: string;
 }
 
 const {
@@ -29,10 +34,15 @@ const {
 	tags,
 	published,
 	status,
+	statusLabel,
 	link = [],
+	href,
+	placeholderIcon = "material-symbols:rocket-launch",
+	class: className,
+	searchText,
 } = Astro.props;
 
-const detailUrl = url(`/projects/${id}/`);
+const detailUrl = href || url(`/projects/${id}/`);
 
 // 状态元数据（标准 key → 本地化 + 配色）
 const statusMeta = status ? getProjectStatusMeta(status) : null;
@@ -52,9 +62,10 @@ const coverClass = gridCoverFullWidth
 ---
 
 <div
-  class="project-card post-card-wrapper card-base flex flex-col w-full rounded-(--radius-large) overflow-hidden relative"
+  class:list={["project-card post-card-wrapper card-base flex flex-col w-full rounded-(--radius-large) overflow-hidden relative", className]}
   data-status={status || ""}
   data-tags={tags?.join(",") || ""}
+  data-search-text={searchText}
 >
   <!-- 封面（在上） -->
   <a href={detailUrl} aria-label={title} class={coverClass}>
@@ -68,7 +79,7 @@ const coverClass = gridCoverFullWidth
       />
     ) : (
       <div class="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-        <Icon name="material-symbols:rocket-launch" class="text-gray-400 text-6xl" />
+        <Icon name={placeholderIcon} class="text-gray-400 text-6xl" />
       </div>
     )}
     <!-- 悬浮：变暗 + 箭头（同文章列表网格模式） -->
@@ -85,7 +96,7 @@ const coverClass = gridCoverFullWidth
         class={`absolute top-3 right-3 z-30 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium backdrop-blur-md ${statusMeta.coverClassName}`}
       >
         {statusMeta.icon && <Icon name={statusMeta.icon} class="text-sm" />}
-        {statusMeta.label}
+        {statusLabel ?? statusMeta.label}
       </span>
     )}
   </a>
