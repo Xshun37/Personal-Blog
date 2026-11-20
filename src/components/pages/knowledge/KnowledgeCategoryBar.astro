@@ -1,0 +1,106 @@
+---
+import { Icon } from "astro-icon/components";
+import I18nKey from "@/i18n/i18nKey";
+import { i18n } from "@/i18n/translation";
+import {
+	getKnowledgeEntries,
+	getKnowledgeTaxonomy,
+} from "@/utils/knowledge-utils";
+import { url } from "@/utils/url-utils";
+
+interface Props {
+	currentCategory?: string;
+}
+
+const { currentCategory = "" } = Astro.props;
+const entries = await getKnowledgeEntries();
+const categories = getKnowledgeTaxonomy(entries, "category");
+const homeUrl = url("/knowledge/");
+const categoriesUrl = url("/knowledge/categories/");
+const isList = Astro.url.pathname === homeUrl;
+---
+
+<knowledge-category-bar class="block card-base category-bar p-3 mb-4" data-home-path={homeUrl} data-current-category={currentCategory}>
+	<nav class="flex items-center gap-2 min-w-0" aria-label="知识分类快捷筛选">
+		<a href={homeUrl} class="category-pill focus-ring-inset text-sm px-3 py-1.5 shrink-0 transition-colors flex items-center justify-center" data-category-name="" aria-label="知识首页">
+			<Icon name="material-symbols:home" class="text-lg" />
+		</a>
+		<a href={homeUrl} class="category-pill focus-ring-inset text-sm px-4 py-1.5 whitespace-nowrap shrink-0 transition-colors flex items-center justify-center" data-knowledge-view="all" data-active={isList ? "" : undefined} aria-current={isList ? "page" : undefined}>
+			{i18n(I18nKey.archive)}
+			<span class="pill-count">{entries.length}</span>
+		</a>
+		<div class="knowledge-category-divider shrink-0" aria-hidden="true"></div>
+		<div class="knowledge-category-scroll flex flex-1 min-w-0 gap-2 overflow-x-auto">
+			{categories.map((category) => (
+				<a href={category.url} class="category-pill focus-ring-inset text-sm px-4 py-1.5 whitespace-nowrap shrink-0 transition-colors flex items-center justify-center" data-knowledge-view="category" data-category={category.name} data-soft-active={currentCategory === category.name ? "" : undefined}>
+					{category.name}
+					<span class="pill-count">{category.count}</span>
+				</a>
+			))}
+		</div>
+		<a href={categoriesUrl} class="category-pill focus-ring-inset text-sm px-3 py-1.5 shrink-0 transition-colors flex items-center justify-center gap-1" data-knowledge-view="more" data-active={Astro.url.pathname === categoriesUrl ? "" : undefined} aria-current={Astro.url.pathname === categoriesUrl ? "page" : undefined}>
+			<span>{i18n(I18nKey.more)}</span>
+			<Icon name="fa7-solid:chevron-right" class="text-sm" />
+		</a>
+	</nav>
+</knowledge-category-bar>
+
+<style>
+	.category-pill {
+		border: none;
+	}
+	.knowledge-category-divider {
+		width: 1px;
+		align-self: stretch;
+		background: var(--line-divider);
+		opacity: 0.5;
+	}
+	.knowledge-category-scroll {
+		scrollbar-width: none;
+	}
+	.knowledge-category-scroll::-webkit-scrollbar {
+		display: none;
+	}
+</style>
+
+<script>
+	class KnowledgeCategoryBar extends HTMLElement {
+		connectedCallback() {
+			this.updateActiveCategory();
+			window.addEventListener("popstate", this.updateActiveCategory);
+		}
+
+		disconnectedCallback() {
+			window.removeEventListener("popstate", this.updateActiveCategory);
+		}
+
+		updateActiveCategory = () => {
+			const currentUrl = new URL(window.location.href);
+			const isList = currentUrl.pathname === this.dataset.homePath;
+			const category = currentUrl.searchParams.get("category");
+			const tag = currentUrl.searchParams.get("tag");
+			for (const link of this.querySelectorAll<HTMLAnchorElement>("[data-knowledge-view]")) {
+				const kind = link.dataset.knowledgeView;
+				const active = kind === "all"
+					? isList && !category && !tag
+					: kind === "more"
+						? currentUrl.pathname === new URL(link.href).pathname
+						: isList && category === link.dataset.category;
+				const soft = !isList && kind === "category" && this.dataset.currentCategory === link.dataset.category;
+				link.toggleAttribute("data-active", active);
+				link.toggleAttribute("data-soft-active", soft);
+				if (active) link.setAttribute("aria-current", kind === "category" ? "true" : "page");
+				else link.removeAttribute("aria-current");
+			}
+			const scroll = this.querySelector<HTMLElement>(".knowledge-category-scroll");
+			const selected = scroll?.querySelector<HTMLElement>("[data-active], [data-soft-active]");
+			if (scroll && selected) {
+				scroll.scrollLeft = Math.max(0, selected.offsetLeft - scroll.offsetLeft - (scroll.clientWidth - selected.offsetWidth) / 2);
+			}
+		};
+	}
+
+	if (!customElements.get("knowledge-category-bar")) {
+		customElements.define("knowledge-category-bar", KnowledgeCategoryBar);
+	}
+</script>

@@ -1,0 +1,62 @@
+---
+import type { MarkdownHeading } from "astro";
+import { Icon } from "astro-icon/components";
+import KnowledgeCategoryBar from "@/components/pages/knowledge/KnowledgeCategoryBar.astro";
+import { knowledgeConfig } from "@/config";
+import I18nKey from "@/i18n/i18nKey";
+import { i18n } from "@/i18n/translation";
+import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import { url } from "@/utils/url-utils";
+import "@/styles/pages/common.css";
+
+interface Props {
+	title?: string;
+	description?: string;
+	headings?: MarkdownHeading[];
+	currentCategory?: string;
+}
+
+const {
+	title = knowledgeConfig.title,
+	description = knowledgeConfig.description,
+	headings = [],
+	currentCategory = "",
+} = Astro.props;
+const links = [
+	{ label: "知识卡片", path: "/knowledge/" },
+	{ label: i18n(I18nKey.categories), path: "/knowledge/categories/" },
+	{ label: i18n(I18nKey.tags), path: "/knowledge/tags/" },
+];
+---
+
+<MainGridLayout title={title} description={description} headings={headings}>
+	<section class="page-shell knowledge-page">
+		{knowledgeConfig.showCategoryBar && <KnowledgeCategoryBar currentCategory={currentCategory} />}
+		<header class="card-base page-header">
+			<div class="page-heading">
+				<div class="page-icon" aria-hidden="true">
+					<Icon name="material-symbols:menu-book-rounded" />
+				</div>
+				<div>
+					<h2>{title}</h2>
+					{description && <p>{description}</p>}
+				</div>
+			</div>
+			<nav class="col-span-full flex flex-wrap gap-2" aria-label={knowledgeConfig.title}>
+				{links.map(({ label, path }) => (
+					<a href={url(path)} class="category-pill px-4 py-1.5 text-sm transition-colors" data-active={Astro.url.pathname === url(path) ? "" : undefined} aria-current={Astro.url.pathname === url(path) ? "page" : undefined}>
+						{label}
+					</a>
+				))}
+			</nav>
+		</header>
+		<slot />
+	</section>
+</MainGridLayout>
+
+<style is:global>
+	/* 分类栏在 Swup 容器外，按当前栏目内容控制显示，兼容软导航与返回。 */
+	#content-column:has(.knowledge-page) > #category-bar-wrapper {
+		display: none;
+	}
+</style>

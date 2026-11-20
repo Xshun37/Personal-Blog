@@ -36,6 +36,33 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		],
 	});
 
+	// 知识及其子菜单，与文章独立组织内容。
+	links.push({
+		name: "知识",
+		url: "/knowledge/",
+		icon: "material-symbols:menu-book-rounded",
+		children: [
+			{
+				name: "知识卡片",
+				url: "/knowledge/",
+				icon: "material-symbols:menu-book-rounded",
+				pageKey: "knowledge",
+			},
+			{
+				name: "分类",
+				url: "/knowledge/categories/",
+				icon: "material-symbols:folder-open",
+				pageKey: "knowledge",
+			},
+			{
+				name: "标签",
+				url: "/knowledge/tags/",
+				icon: "material-symbols:tag-rounded",
+				pageKey: "knowledge",
+			},
+		],
+	});
+
 	//社交及其子菜单
 	links.push({
 		name: "社交",

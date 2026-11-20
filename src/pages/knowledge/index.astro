@@ -1,0 +1,66 @@
+---
+import KnowledgeCard from "@/components/pages/knowledge/KnowledgeCard.astro";
+import KnowledgeLayout from "@/components/pages/knowledge/KnowledgeLayout.astro";
+import { siteConfig } from "@/config";
+import I18nKey from "@/i18n/i18nKey";
+import { i18n } from "@/i18n/translation";
+import { getKnowledgeEntries } from "@/utils/knowledge-utils";
+import { url } from "@/utils/url-utils";
+import "@/styles/pages/card-grid.css";
+
+if (!siteConfig.pages.knowledge) return Astro.redirect(url("/404/"));
+
+const entries = await getKnowledgeEntries();
+---
+
+<KnowledgeLayout>
+	<knowledge-filter class="block">
+		<div class="card-base p-6 mb-4 flex flex-wrap items-center gap-3">
+			<span class="text-50" role="status" aria-live="polite">共 <span data-count>{entries.length}</span> 张卡片</span>
+			<span data-filter-label class="text-(--primary)"></span>
+			<a href={url("/knowledge/")} data-reset class="text-sm text-30 hover:text-(--primary)" hidden>清除筛选</a>
+		</div>
+		<div class="card-grid" style="--card-grid-min-width: min(100%, 280px)">
+			{entries.map((entry) => <KnowledgeCard entry={entry} />)}
+		</div>
+		<p data-empty hidden={entries.length > 0} class="card-base p-8 text-center text-30">{i18n(I18nKey.noData)}</p>
+	</knowledge-filter>
+</KnowledgeLayout>
+
+<script>
+	class KnowledgeFilter extends HTMLElement {
+		connectedCallback() {
+			this.applyFilters();
+			window.addEventListener("popstate", this.applyFilters);
+		}
+
+		disconnectedCallback() {
+			window.removeEventListener("popstate", this.applyFilters);
+		}
+
+		applyFilters = () => {
+			const params = new URLSearchParams(window.location.search);
+			const category = params.get("category");
+			const tag = params.get("tag");
+			let count = 0;
+			for (const card of this.querySelectorAll<HTMLElement>("[data-knowledge-card]")) {
+				const tags: string[] = JSON.parse(card.dataset.tags || "[]");
+				const visible = (!category || card.dataset.category === category) && (!tag || tags.includes(tag));
+				card.hidden = !visible;
+				if (visible) count++;
+			}
+			const counter = this.querySelector("[data-count]");
+			if (counter) counter.textContent = String(count);
+			const label = this.querySelector("[data-filter-label]");
+			if (label) label.textContent = [category, tag ? `#${tag}` : ""].filter(Boolean).join(" · ");
+			const reset = this.querySelector<HTMLElement>("[data-reset]");
+			if (reset) reset.hidden = !category && !tag;
+			const empty = this.querySelector<HTMLElement>("[data-empty]");
+			if (empty) empty.hidden = count > 0;
+		};
+	}
+
+	if (!customElements.get("knowledge-filter")) {
+		customElements.define("knowledge-filter", KnowledgeFilter);
+	}
+</script>

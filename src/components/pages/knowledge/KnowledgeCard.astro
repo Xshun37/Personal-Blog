@@ -1,0 +1,33 @@
+---
+import ButtonTag from "@/components/common/ButtonTag.astro";
+import { formatDateToYYYYMMDD } from "@/utils/date-utils";
+import {
+	getKnowledgeCategory,
+	getKnowledgeFilterUrl,
+	getKnowledgeUrl,
+	type KnowledgeEntry,
+} from "@/utils/knowledge-utils";
+
+interface Props {
+	entry: KnowledgeEntry;
+}
+
+const { entry } = Astro.props;
+const { title, description, tags, published, updated, draft } = entry.data;
+const category = getKnowledgeCategory(entry);
+---
+
+<article class="card-base flex flex-col gap-3 p-6 min-w-0" data-knowledge-card data-category={category} data-tags={JSON.stringify(tags)}>
+	<a href={getKnowledgeUrl(entry.id)} class="group block flex-1">
+		<h2 class="text-xl font-bold text-90 group-hover:text-(--primary) transition-colors break-words">{title}</h2>
+		{draft && <span class="text-sm text-30">草稿</span>}
+		{description && <p class="text-50 mt-2 line-clamp-3 break-words">{description}</p>}
+	</a>
+	<div class="flex flex-wrap items-center gap-2 text-sm text-30">
+		<a href={getKnowledgeFilterUrl("category", category)} class="hover:text-(--primary)">{category}</a>
+		<time datetime={(updated ?? published).toISOString()}>{formatDateToYYYYMMDD(updated ?? published)}</time>
+	</div>
+	{tags.length > 0 && <div class="flex flex-wrap gap-2">
+		{tags.map((tag) => <ButtonTag href={getKnowledgeFilterUrl("tag", tag)}>{tag}</ButtonTag>)}
+	</div>}
+</article>
