@@ -5,7 +5,7 @@ import type { FriendLink, FriendsPageConfig } from "../types/friendsConfig";
 // 友链页面配置
 export const friendsPageConfig: FriendsPageConfig = {
 	// 页面标题，如果留空则使用 i18n 中的翻译
-	title: "友链",
+	title: "友情链接",
 
 	// 页面描述文本，如果留空则使用 i18n 中的翻译
 	description: "",
@@ -29,15 +29,15 @@ export const friendsConfig: FriendLink[] = [
 		desc: "Firefly主题模板文档",
 		siteurl: "https://docs-firefly.cuteleaf.cn",
 		tags: ["Docs"],
-		weight: 9,
+		weight: 7,
 		enabled: true,
 	},
 	{
-		title: "Astro",
-		imgurl: "https://avatars.githubusercontent.com/u/44914786?v=4&s=640",
-		desc: "The web framework for content-driven websites. ⭐️ Star to support our work!",
-		siteurl: "https://github.com/withastro/astro",
-		tags: ["Framework"],
+		title: "东方幻想指南",
+		imgurl: "/assets/images/friends/fantasyguide.webp",
+		desc: "北京大学东方例会，迄今已举办18届",
+		siteurl: "https://fantasyguide.cn/",
+		tags: ["ACGN"],
 		weight: 8,
 		enabled: true,
 	},
