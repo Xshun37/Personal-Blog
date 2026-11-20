@@ -2,7 +2,8 @@
 
 - 内容：`src/content/knowledge/**/*.md`，每个文件是一张卡片。
 - 配置：`src/config/knowledgeConfig.ts`，控制栏目标题和描述。
-- 顶部分类快捷栏：`knowledgeConfig.showCategoryBar`，显示知识卡片总数、各分类数量和“更多”入口；只统计知识内容。
+- 全站文章分类栏保持在公共顶部；知识栏目使用“知识卡片 / 分类 / 标签”导航，不额外增加快捷栏。
+- 全站滚动保留：`src/config/siteConfig.ts` 中的 `preserveScroll` 默认开启，适用于首页、文章、知识及其他站内页面。普通切换保留高度；新页面内容太短时回退到内容起点。后退/前进恢复历史位置，锚点和回到顶部保持原行为。手动滚动、连续点击或窗口尺寸变化会取消旧的定位任务。
 - 开关：`src/config/siteConfig.ts` 中的 `pages.knowledge`，也支持 `PUBLIC_PAGES_KNOWLEDGE=false`。
 - 导航：`src/config/navBarConfig.ts`，知识与文章、社交同级。
 - 样式：复用现有布局、卡片、分类、标签和 Markdown 样式。

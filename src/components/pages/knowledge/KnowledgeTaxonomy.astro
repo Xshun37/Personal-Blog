@@ -25,7 +25,7 @@ const icon =
 ---
 
 <KnowledgeLayout title={`${knowledgeConfig.title} · ${label}`}>
-	<div class="card-base p-6 md:p-8 flex flex-wrap gap-3">
+	<div class="card-base p-6 md:p-8 flex flex-wrap gap-3" data-scroll-content>
 		{items.map((item) => (
 			<a href={item.url} class:list={["inline-flex items-center gap-2 px-4 py-2 transition-colors", kind === "tag" ? "tag-item" : "category-pill"]}>
 				<Icon name={icon} />

@@ -45,6 +45,8 @@ export type SiteConfig = {
 
 	// 页面整体宽度（单位：rem）
 	pageWidth?: number;
+	// 全站切页保留滚动高度，默认开启。
+	preserveScroll?: boolean;
 
 	// 卡片样式配置
 	card: {

@@ -30,8 +30,8 @@ const category = getKnowledgeCategory(entry);
 const { Content, headings } = await render(entry);
 ---
 
-<KnowledgeLayout title={title} description={description} headings={headings} currentCategory={category}>
-	<article class="card-base px-6 md:px-9 py-8" data-pagefind-body>
+<KnowledgeLayout title={title} description={description} headings={headings}>
+	<article class="card-base px-6 md:px-9 py-8" data-pagefind-body data-scroll-content>
 		<header class="mb-6">
 			<h2 class="text-3xl font-bold text-90 break-words" data-pagefind-meta="title" data-pagefind-weight="10">{title}</h2>
 			{draft && <p class="text-sm text-30 mt-2">草稿</p>}

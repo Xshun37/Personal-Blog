@@ -1,7 +1,6 @@
 ---
 import type { MarkdownHeading } from "astro";
 import { Icon } from "astro-icon/components";
-import KnowledgeCategoryBar from "@/components/pages/knowledge/KnowledgeCategoryBar.astro";
 import { knowledgeConfig } from "@/config";
 import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
@@ -13,14 +12,12 @@ interface Props {
 	title?: string;
 	description?: string;
 	headings?: MarkdownHeading[];
-	currentCategory?: string;
 }
 
 const {
 	title = knowledgeConfig.title,
 	description = knowledgeConfig.description,
 	headings = [],
-	currentCategory = "",
 } = Astro.props;
 const links = [
 	{ label: "知识卡片", path: "/knowledge/" },
@@ -31,7 +28,6 @@ const links = [
 
 <MainGridLayout title={title} description={description} headings={headings}>
 	<section class="page-shell knowledge-page">
-		{knowledgeConfig.showCategoryBar && <KnowledgeCategoryBar currentCategory={currentCategory} />}
 		<header class="card-base page-header">
 			<div class="page-heading">
 				<div class="page-icon" aria-hidden="true">
@@ -53,10 +49,3 @@ const links = [
 		<slot />
 	</section>
 </MainGridLayout>
-
-<style is:global>
-	/* 分类栏在 Swup 容器外，按当前栏目内容控制显示，兼容软导航与返回。 */
-	#content-column:has(.knowledge-page) > #category-bar-wrapper {
-		display: none;
-	}
-</style>

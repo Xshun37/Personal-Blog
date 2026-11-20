@@ -14,7 +14,7 @@ const entries = await getKnowledgeEntries();
 ---
 
 <KnowledgeLayout>
-	<knowledge-filter class="block">
+	<knowledge-filter class="block" data-scroll-content>
 		<div class="card-base p-6 mb-4 flex flex-wrap items-center gap-3">
 			<span class="text-50" role="status" aria-live="polite">共 <span data-count>{entries.length}</span> 张卡片</span>
 			<span data-filter-label class="text-(--primary)"></span>

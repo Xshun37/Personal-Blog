@@ -1,3 +1,4 @@
+import type Swup from "@swup/astro/client/Swup";
 import { expressiveCodeConfig, navbarMode, siteConfig } from "@/config";
 import type { WALLPAPER_MODE } from "@/types/config";
 import { scheduleContentOverflowEnhancements } from "@/utils/content-overflow-utils";
@@ -11,6 +12,7 @@ import {
 	updateMainGridCols,
 	updateSidebarComponentsVisibility,
 } from "@/utils/grid-layout-utils";
+import { setupPageScroll } from "@/utils/page-scroll-utils";
 import { scrollFunction } from "@/utils/scroll-utils";
 import {
 	syncBannerHomeTextVisibility,
@@ -62,9 +64,8 @@ function finishProgressBar(): void {
  * 注册 link:click / content:replace / visit:start / page:view / visit:end 钩子。
  */
 function registerSwupHooks(): void {
-	// 非首页全屏模式与 overlay 一致（内容在最上面），首页 hero 结构回顶即可，
-	// 均无需自定义 swup 回顶行为，保留默认滚动到顶部
-	// TODO: temp solution to change the height of the banner
+	// 先应用全站滚动策略；关闭保留功能时沿用默认回顶和 FLIP。
+	setupPageScroll(window.swup);
 	window.swup.hooks.on(
 		"link:click",
 		(_visit: unknown, { el }: { el: HTMLAnchorElement }) => {
@@ -133,7 +134,7 @@ function registerSwupHooks(): void {
 			}
 		}
 	});
-	window.swup.hooks.on("visit:start", (visit: { to: { url: string } }) => {
+	window.swup.hooks.on("visit:start", (visit: Swup["visit"]) => {
 		// Start progress bar（WAAPI 合成线程动画，不强制回流）
 		startProgressBar();
 
@@ -143,7 +144,8 @@ function registerSwupHooks(): void {
 		// 必须用 instant：html 上有 scroll-behavior:smooth（main.css），behavior:"auto" 会被当作平滑滚动，
 		// 在 FLIP 期间与内容位移叠加、同样造成“顶到最顶部再回落”。
 		// 移动端（<768）不使用即时回顶，避免闪烁（由 swup 默认滚动接管）
-		if (window.innerWidth >= 768) {
+		// 尊重全站保留策略、历史恢复和显式锚点，避免先回顶再拉回。
+		if (window.innerWidth >= 768 && visit.scroll.reset && !visit.to.hash) {
 			window.scrollTo({ top: 0, behavior: "instant" });
 		}
 
@@ -157,9 +159,15 @@ function registerSwupHooks(): void {
 		// FLIP 只在 is-home 状态变化（首页↔非首页）时才有意义；文章↔文章、首页↔首页
 		// 类未变 → delta 必为 0，直接短路，避免常见切页白付两次强制布局读取
 		if (isHomePage !== wasHome && contentPanel) {
-			const oldTop = contentPanel.getBoundingClientRect().top; // 类切换前读
+			// 保留位置时只更新首页布局，不叠加依赖回顶坐标的 FLIP 动画。
+			const animateLayout = visit.scroll.reset && !visit.to.hash;
+			const oldTop = animateLayout
+				? contentPanel.getBoundingClientRect().top
+				: 0;
 			bodyElement.classList.toggle("is-home", isHomePage);
-			const newTop = contentPanel.getBoundingClientRect().top; // 类切换后读
+			const newTop = animateLayout
+				? contentPanel.getBoundingClientRect().top
+				: 0;
 			const delta = oldTop - newTop;
 			// 全屏首页↔非首页 delta ≈ 92vh，总是超过 0.75 视口，此前被跳过导致内容区瞬间跳变；
 			// 现在放行，改用与移动端横幅模式完全一致的标准 FLIP（强制回流提交 invert + CSS 过渡），
