@@ -331,7 +331,7 @@ html[data-has-wallpaper] #navbar[data-transparent-mode="semi"].navbar-sticky-sha
  * 用 CSS filter 把 SVG/图片 Logo 染色，主题色相变化时实时跟随
  * ============================================ */
 img.navbar-logo {
-    filter: grayscale(1) sepia(1) saturate(3.5) hue-rotate(calc(var(--hue, 191) * 1deg - 35deg)) contrast(1.22) brightness(1.05);
+    filter: grayscale(1) sepia(1) saturate(3.5) hue-rotate(calc(var(--hue, 1) * 1deg - 65deg)) contrast(1.22) brightness(1.05);
     transition: filter 0.3s ease;
 }
 
