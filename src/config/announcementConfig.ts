@@ -2,13 +2,13 @@ import type { AnnouncementConfig } from "../types/announcementConfig";
 
 export const announcementConfig: AnnouncementConfig = {
 	// 公告标题，留空则走i18n默认标题
-	title: "",
+	title: "近期更新",
 
 	// 公告内容
-	content: "欢迎来到我的博客！这是一则示例公告。",
+	content: "在我的-作品集中追加了自己的设计作品，欢迎大家查看。",
 
 	// 是否允许用户关闭公告
-	closable: true,
+	closable: false,
 
 	link: {
 		// 启用链接
@@ -16,7 +16,7 @@ export const announcementConfig: AnnouncementConfig = {
 		// 链接文本
 		text: "了解更多",
 		// 链接 URL
-		url: "/about/",
+		url: "/portfolio/",
 		// 内部链接
 		external: false,
 	},
