@@ -20,11 +20,9 @@ link:
 > **原视频简介**
 >
 > 本视频为北京大学第十六届东方例会东方幻想指南的 Opening Theme，于 11.23 下午在会场播放。
-> <div class="not-prose flex items-center gap-3 my-8 text-(--primary) opacity-60">
->  <span class="h-px flex-1 bg-current"></span>
->  <span class="text-xs">✦</span>
->  <span class="h-px flex-1 bg-current"></span>
-> </div>
+>
+> -*-
+>
 > 入冬的事情很多，时间很紧，拖到了期中后用一周见缝插针地完成了这个作品，一直改到了当天上午，播片的时候发现新换的图层忘记开 3D，气晕；
 >
 > 并不是一个足够优秀的作品，自我感觉很多分镜做的又摆又素，给人的感觉是虽然做了很多东西，但没有足够满意的叙事。不过毕竟工期和素材限制摆在这里，我已燃尽；
@@ -50,11 +48,9 @@ link:
 > - [@Turu_ha_](https://x.com/annin__cha/status/1846177324414521688) —— 主角组图
 > - 来自各种东方官方制品及策划组自行二创的素材
 > - 东方归言录的背景图片，解决了不少构图困难
-> <div class="not-prose flex items-center gap-3 my-8 text-(--primary) opacity-60">
->  <span class="h-px flex-1 bg-current"></span>
->  <span class="text-xs">✦</span>
->  <span class="h-px flex-1 bg-current"></span>
-> </div>
+>
+> -*-
+>
 > 封闭的瓶中，是永不凋零的花
 >
 > 是谁，执着于这般的永恒？

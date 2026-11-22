@@ -5,7 +5,10 @@ published: 2025-10-20
 draft: false
 order: 100
 description: 恰逢樱之诗发售十周年纪念，作为技术部执委第一次负责了晚会OP制作。仍然是我自认为完成度最高、也是最满意的作品。
-image: "images/ofop-2025fall-fresh.png"
+image: "images/ofop-2025fall-fresh-2.png"
+images: 
+  - "images/ofop-2025fall-fresh-2.png"
+  - "images/ofop-2025fall-fresh.png"
 status: "published"
 tags: 
   - 元火
@@ -22,19 +25,14 @@ link:
 
 > [!NOTE]
 > **原视频简介**
-> <div class="not-prose flex items-center gap-3 my-8 text-(--primary) opacity-60">
->  <span class="h-px flex-1 bg-current"></span>
->  <span class="text-xs">✦</span>
->  <span class="h-px flex-1 bg-current"></span>
-> </div>
+>
+> -*-
+>
 > 本视频为元火动漫社迎新晚会的 Opening Theme，于 10.19 晚在会场播放。
 >
+> -*-
+>
 > 10 月 23 日是樱之诗发售的十周年纪念日，非常巧合，也倍感荣幸选择了这首歌进行创作。
-> <div class="not-prose flex items-center gap-3 my-8 text-(--primary) opacity-60">
->  <span class="h-px flex-1 bg-current"></span>
->  <span class="text-xs">✦</span>
->  <span class="h-px flex-1 bg-current"></span>
-> </div>
 > 国庆这两周十分投入地完成了全部分镜，应该是目前个人完成度和质量综合最高的作品，已燃尽。
 >
 > 如果对比原作，您能发现许多小巧思。
@@ -57,11 +55,9 @@ link:
 > 择日发表创作谈。
 >
 > 二编：偷偷修了个 bug；添加了 2P 对比版。
-> <div class="not-prose flex items-center gap-3 my-8 text-(--primary) opacity-60">
->  <span class="h-px flex-1 bg-current"></span>
->  <span class="text-xs">✦</span>
->  <span class="h-px flex-1 bg-current"></span>
-> </div>
+>
+> -*-
+>
 > 将瞬间封存于其中的永恒，方才是我们存在的价值与意义；
 >
 > 在这樱之诗下，用心去体会吧，所谓永恒的模样

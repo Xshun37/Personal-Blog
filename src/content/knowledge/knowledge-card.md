@@ -12,7 +12,7 @@ preview: |-
   > 例如，用训练集和测试集的表现说明「过拟合」。
 category: 博客
 tags: [Markdown, 知识管理]
-draft: false
+draft: true
 ---
 
 ## 什么是知识卡片
