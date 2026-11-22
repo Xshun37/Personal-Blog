@@ -22,6 +22,7 @@ interface Props {
 	href?: string;
 	placeholderIcon?: string;
 	class?: string;
+	coverAspect?: string;
 	searchText?: string;
 }
 
@@ -39,6 +40,7 @@ const {
 	href,
 	placeholderIcon = "material-symbols:rocket-launch",
 	class: className,
+	coverAspect = "aspect-2/1",
 	searchText,
 } = Astro.props;
 
@@ -57,8 +59,8 @@ const gridCoverFullWidth =
 	siteConfig.postListLayout.grid.coverFullWidth ?? false;
 
 const coverClass = gridCoverFullWidth
-	? "project-card-image group relative block aspect-2/1 overflow-hidden"
-	: "project-card-image group relative block aspect-2/1 overflow-hidden mx-4 mt-4 rounded-xl";
+	? `project-card-image group relative block ${coverAspect} overflow-hidden`
+	: `project-card-image group relative block ${coverAspect} overflow-hidden mx-4 mt-4 rounded-xl`;
 ---
 
 <div
