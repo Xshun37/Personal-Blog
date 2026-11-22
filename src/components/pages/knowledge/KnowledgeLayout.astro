@@ -4,7 +4,10 @@ import { Icon } from "astro-icon/components";
 import KnowledgeNavigation from "@/components/pages/knowledge/KnowledgeNavigation.astro";
 import { knowledgeConfig } from "@/config";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
-import { getKnowledgeEntries, type KnowledgeEntry } from "@/utils/knowledge-utils";
+import {
+	getKnowledgeEntries,
+	type KnowledgeEntry,
+} from "@/utils/knowledge-utils";
 import { pathsEqual, url } from "@/utils/url-utils";
 import "@/styles/pages/common.css";
 

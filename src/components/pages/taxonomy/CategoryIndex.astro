@@ -12,7 +12,10 @@ interface Props {
 }
 
 const { categories, title, entryCountLabel } = Astro.props;
-const totalEntries = categories.reduce((sum, category) => sum + category.count, 0);
+const totalEntries = categories.reduce(
+	(sum, category) => sum + category.count,
+	0,
+);
 ---
 
 <!-- 页面标题 -->

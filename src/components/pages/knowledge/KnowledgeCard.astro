@@ -16,7 +16,8 @@ interface Props {
 }
 
 const { entry } = Astro.props;
-const { title, description, preview, tags, published, updated, draft } = entry.data;
+const { title, description, preview, tags, published, updated, draft } =
+	entry.data;
 const category = getKnowledgeCategory(entry);
 const previewHtml = preview
 	? sanitizeHtml(marked.parse(preview, { async: false, breaks: true }), {
