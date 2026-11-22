@@ -6,7 +6,7 @@
 
 ## 添加作品
 
-完整字段说明与示例见 `src/content/portfolio/example-portfolio.md`，结构与“示例项目”一致。也可复制 `graphic-design.md` 或 `visual-design.md`，修改文件名和内容：
+完整字段说明与示例见 `src/content/portfolio/example-portfolio.md`，结构与“示例项目”一致。可复制它并修改文件名和内容：
 
 ```yaml
 ---
@@ -28,6 +28,7 @@ lang: ""
 ```
 
 - `image` 可留空；支持 Markdown 同目录相对路径、`public` 下的根路径和远程图片 URL。
+- `images` 可选，多图封面轮播：按顺序展示，鼠标悬停时显示左右切换按钮，图片下方显示指示点。填了多张时优先使用 `images`，只有一张或留空时仍用 `image`。
 - `link` 与项目使用相同的 `{ label, icon, value }`：平台名称、图标、目标地址。支持多个按钮；没有链接时填 `[]`。`icon` 支持 astro-icon 名、图片 URL 或留空回退为名称首字母。
 - Markdown 正文用于作品介绍、过程和更多图片；列表卡片可直接打开外部作品，也可进入介绍页。
 - `status` 使用 `planning`（计划中）、`developing`（制作中）、`published`（已发布）；顶部按这三种状态筛选，名称、简介与标签参与搜索。

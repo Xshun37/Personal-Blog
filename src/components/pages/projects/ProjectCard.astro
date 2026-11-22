@@ -13,6 +13,7 @@ interface Props {
 	title: string;
 	description?: string;
 	image: string;
+	images?: string[];
 	basePath?: string;
 	tags?: string[];
 	published?: Date;
@@ -31,6 +32,7 @@ const {
 	title,
 	description,
 	image,
+	images = [],
 	basePath = "/",
 	tags,
 	published,
@@ -50,9 +52,6 @@ const detailUrl = href || url(`/projects/${id}/`);
 const statusMeta = status ? getProjectStatusMeta(status) : null;
 
 // 标签：只显示前 N 个，超出折叠成 +N
-const maxTags = 2;
-const visibleTags = (tags || []).slice(0, maxTags);
-const hiddenTagCount = (tags || []).length - visibleTags.length;
 
 // 网格封面是否撑满贴边，跟随文章列表设置（postListLayout.grid.coverFullWidth）
 const gridCoverFullWidth =
@@ -61,6 +60,15 @@ const gridCoverFullWidth =
 const coverClass = gridCoverFullWidth
 	? `project-card-image group relative block ${coverAspect} overflow-hidden`
 	: `project-card-image group relative block ${coverAspect} overflow-hidden mx-4 mt-4 rounded-xl`;
+
+// 多图封面：images 优先，只有一张时沿用原来的单图逻辑
+const coverImages = images.filter(Boolean);
+const carouselCoverClass = gridCoverFullWidth
+	? `project-card-image group relative block ${coverAspect} overflow-hidden`
+	: `project-card-image group relative block ${coverAspect} overflow-hidden rounded-xl`;
+const carouselWrapClass = gridCoverFullWidth
+	? "cover-carousel block"
+	: "cover-carousel block mx-4 mt-4";
 ---
 
 <div
@@ -69,39 +77,102 @@ const coverClass = gridCoverFullWidth
   data-tags={tags?.join(",") || ""}
   data-search-text={searchText}
 >
-  <!-- 封面（在上） -->
-  <a href={detailUrl} aria-label={title} class={coverClass}>
-    {image ? (
-      <CoverImage
-        src={image}
-        basePath={basePath}
-        alt={title}
-        class="w-full h-full transition-transform duration-300 group-hover:scale-110"
-        preview={false}
-      />
-    ) : (
-      <div class="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-        <Icon name={placeholderIcon} class="text-gray-400 text-6xl" />
+  <!-- 封面（在上）：多图轮播 / 单图 -->
+  {coverImages.length > 1 ? (
+    <cover-carousel class={carouselWrapClass}>
+      <div class={carouselCoverClass}>
+        <a href={detailUrl} aria-label={title} class="absolute inset-0 z-0 block">
+          {coverImages.map((img, idx) => (
+            <div
+              class:list={["cover-slide absolute inset-0", idx === 0 && "is-active"]}
+              data-cover-slide
+              data-index={idx}
+            >
+              <CoverImage
+                src={img}
+                basePath={basePath}
+                alt={`${title} ${idx + 1}`}
+                class="w-full h-full transition-transform duration-300 group-hover:scale-110"
+                preview={false}
+                loading={idx === 0 ? "eager" : "lazy"}
+              />
+            </div>
+          ))}
+          <!-- 悬浮：变暗 + 箭头（同文章列表网格模式） -->
+          <div class="absolute inset-0 pointer-events-none z-10 transition group-hover:bg-black/30" />
+          <div class="absolute inset-0 pointer-events-none z-20 flex items-center justify-center">
+            <Icon
+              name="material-symbols:chevron-right-rounded"
+              class="transition opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 text-white text-5xl"
+            />
+          </div>
+          <!-- 状态徽标覆盖在封面右上角 -->
+          {statusMeta && (
+            <span
+              class={`absolute top-3 right-3 z-30 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium backdrop-blur-md ${statusMeta.coverClassName}`}
+            >
+              {statusMeta.icon && <Icon name={statusMeta.icon} class="text-sm" />}
+              {statusLabel ?? statusMeta.label}
+            </span>
+          )}
+        </a>
+        <!-- 常驻切换栏：叠在图片底部 -->
+        <div class="cover-pager absolute inset-x-0 bottom-1.5 z-20 flex items-center justify-center gap-2 text-white/90">
+          <button type="button" data-cover-prev class="cover-nav-btn" aria-label="上一张">
+            <Icon name="material-symbols:chevron-left-rounded" class="text-[1.25rem]" />
+          </button>
+          <div class="cover-dots flex items-center gap-1.5" data-cover-dots>
+            {coverImages.map((_, idx) => (
+              <button
+                type="button"
+                data-cover-dot
+                data-index={idx}
+                class:list={["cover-dot", idx === 0 && "is-active"]}
+                aria-label={`第 ${idx + 1} 张`}
+              />
+            ))}
+          </div>
+          <button type="button" data-cover-next class="cover-nav-btn" aria-label="下一张">
+            <Icon name="material-symbols:chevron-right-rounded" class="text-[1.25rem]" />
+          </button>
+        </div>
       </div>
-    )}
-    <!-- 悬浮：变暗 + 箭头（同文章列表网格模式） -->
-    <div class="absolute inset-0 pointer-events-none z-10 transition group-hover:bg-black/30" />
-    <div class="absolute inset-0 pointer-events-none z-20 flex items-center justify-center">
-      <Icon
-        name="material-symbols:chevron-right-rounded"
-        class="transition opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 text-white text-5xl"
-      />
-    </div>
-    <!-- 状态徽标覆盖在封面右上角 -->
-    {statusMeta && (
-      <span
-        class={`absolute top-3 right-3 z-30 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium backdrop-blur-md ${statusMeta.coverClassName}`}
-      >
-        {statusMeta.icon && <Icon name={statusMeta.icon} class="text-sm" />}
-        {statusLabel ?? statusMeta.label}
-      </span>
-    )}
-  </a>
+    </cover-carousel>
+  ) : (
+    <a href={detailUrl} aria-label={title} class={coverClass}>
+      {image ? (
+        <CoverImage
+          src={image}
+          basePath={basePath}
+          alt={title}
+          class="w-full h-full transition-transform duration-300 group-hover:scale-110"
+          preview={false}
+        />
+      ) : (
+        <div class="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+          <Icon name={placeholderIcon} class="text-gray-400 text-6xl" />
+        </div>
+      )}
+      <!-- 悬浮：变暗 + 箭头（同文章列表网格模式） -->
+      <div class="absolute inset-0 pointer-events-none z-10 transition group-hover:bg-black/30" />
+      <div class="absolute inset-0 pointer-events-none z-20 flex items-center justify-center">
+        <Icon
+          name="material-symbols:chevron-right-rounded"
+          class="transition opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 text-white text-5xl"
+        />
+      </div>
+      <!-- 状态徽标覆盖在封面右上角 -->
+      {statusMeta && (
+        <span
+          class={`absolute top-3 right-3 z-30 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium backdrop-blur-md ${statusMeta.coverClassName}`}
+        >
+          {statusMeta.icon && <Icon name={statusMeta.icon} class="text-sm" />}
+          {statusLabel ?? statusMeta.label}
+        </span>
+      )}
+    </a>
+  )}
+  <!-- 统一媒体底部高度：单图时也保留与轮播切换栏相同的高度，保证标题位置一致 -->
 
   <!-- 内容（在下） -->
   <div class="post-card-content p-4 flex flex-col flex-1 min-h-0">
@@ -122,24 +193,34 @@ const coverClass = gridCoverFullWidth
           <span class="text-50 text-sm font-medium">{formatDateToYYYYMMDD(published)}</span>
         </div>
       )}
-      {visibleTags.length > 0 && (
-        <div class="flex items-center">
-          <div class="meta-icon">
+      {(tags || []).length > 0 && (
+        <div class="flex min-w-0 flex-1 items-center">
+          <div class="meta-icon shrink-0">
             <Icon name="material-symbols:tag-rounded" class="text-xl" />
           </div>
-          <span class="flex flex-row flex-nowrap items-center">
-            {visibleTags.map((tag, i) => (
-              <span class="flex items-center">
-                {i !== 0 && (
-                  <span class="mx-1.5 text-sm font-medium text-(--meta-divider)">/</span>
-                )}
-                <span class="text-50 text-sm font-medium whitespace-nowrap">{tag}</span>
-              </span>
-            ))}
-            {hiddenTagCount > 0 && (
-              <span class="ml-1.5 text-50 text-sm font-medium">+{hiddenTagCount}</span>
-            )}
-          </span>
+          <tag-fit class="flex min-w-0 flex-1 items-center overflow-hidden">
+            <span class="flex flex-row flex-nowrap items-center" data-tag-track>
+              {(tags || []).map((tag, i) => (
+                <>
+                  {i !== 0 && (
+                    <span
+                      class="mx-1.5 shrink-0 text-sm font-medium text-(--meta-divider)"
+                      data-tag-sep
+                    >
+                      /
+                    </span>
+                  )}
+                  <span class="flex shrink-0 items-center" data-tag-item>
+                    <span class="text-50 whitespace-nowrap text-sm font-medium">{tag}</span>
+                  </span>
+                </>
+              ))}
+            </span>
+            <span
+              class="ml-1.5 hidden shrink-0 text-50 text-sm font-medium"
+              data-tag-overflow
+            />
+          </tag-fit>
         </div>
       )}
     </div>
@@ -190,3 +271,158 @@ const coverClass = gridCoverFullWidth
       </div>
   </div>
 </div>
+
+
+<style>
+  .cover-slide {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  .cover-slide.is-active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .cover-nav-btn {
+    display: inline-flex;
+    width: 1.5rem;
+    height: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    color: #fff;
+    background: rgb(0 0 0 / 32%);
+    backdrop-filter: blur(3px);
+    opacity: 0.85;
+    transition: opacity 0.15s ease, background-color 0.15s ease;
+  }
+  .cover-nav-btn:hover {
+    opacity: 1;
+    background: rgb(0 0 0 / 55%);
+  }
+  .cover-nav-btn:focus-visible {
+    opacity: 1;
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+  .cover-dot {
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 9999px;
+    background: currentColor;
+    opacity: 0.25;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .cover-dot.is-active {
+    opacity: 0.85;
+    transform: scale(1.15);
+  }
+</style>
+
+<script>
+  class CoverCarousel extends HTMLElement {
+    connectedCallback() {
+      if (this.dataset.ready === "1") return;
+      this.dataset.ready = "1";
+
+      const slides = Array.from(
+        this.querySelectorAll<HTMLElement>("[data-cover-slide]"),
+      );
+      const dots = Array.from(
+        this.querySelectorAll<HTMLElement>("[data-cover-dot]"),
+      );
+      if (slides.length <= 1) return;
+
+      let index = 0;
+      const show = (next: number) => {
+        index = (next + slides.length) % slides.length;
+        slides.forEach((slide, i) =>
+          slide.classList.toggle("is-active", i === index),
+        );
+        dots.forEach((dot, i) =>
+          dot.classList.toggle("is-active", i === index),
+        );
+      };
+
+      const handle = (fn: () => void) => (event: Event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        fn();
+        // 鼠标点击后立即失焦，避免按钮因焦点残留而一直显示
+        (event.currentTarget as HTMLElement | null)?.blur();
+      };
+
+      this.querySelector("[data-cover-prev]")?.addEventListener(
+        "click",
+        handle(() => show(index - 1)),
+      );
+      this.querySelector("[data-cover-next]")?.addEventListener(
+        "click",
+        handle(() => show(index + 1)),
+      );
+      dots.forEach((dot, i) =>
+        dot.addEventListener("click", handle(() => show(i))),
+      );
+    }
+  }
+
+  if (!customElements.get("cover-carousel")) {
+    customElements.define("cover-carousel", CoverCarousel);
+  }
+</script>
+
+
+<script>
+  class TagFit extends HTMLElement {
+    connectedCallback() {
+      if (this.dataset.ready === "1") return;
+      this.dataset.ready = "1";
+
+      const track = this.querySelector<HTMLElement>("[data-tag-track]");
+      const overflow = this.querySelector<HTMLElement>("[data-tag-overflow]");
+      if (!track || !overflow) return;
+
+      const items = Array.from(
+        this.querySelectorAll<HTMLElement>("[data-tag-item]"),
+      );
+      const seps = Array.from(
+        this.querySelectorAll<HTMLElement>("[data-tag-sep]"),
+      );
+      if (items.length === 0) return;
+
+      const update = () => {
+        for (const el of items) el.classList.remove("hidden");
+        for (const el of seps) el.classList.remove("hidden");
+        overflow.classList.add("hidden");
+        overflow.textContent = "";
+
+        const available = this.clientWidth;
+        if (available <= 0) return;
+        if (track.scrollWidth <= available) return;
+
+        overflow.textContent = "+99";
+        overflow.classList.remove("hidden");
+
+        let visible = items.length;
+        while (
+          visible > 0 &&
+          track.scrollWidth + overflow.offsetWidth + 4 > available
+        ) {
+          visible -= 1;
+          items[visible].classList.add("hidden");
+          if (seps[visible - 1]) seps[visible - 1].classList.add("hidden");
+          overflow.textContent = `+${items.length - visible}`;
+        }
+        overflow.textContent = `+${items.length - visible}`;
+      };
+
+      update();
+      new ResizeObserver(() => update()).observe(this);
+      document.fonts?.ready.then(() => update());
+    }
+  }
+
+  if (!customElements.get("tag-fit")) {
+    customElements.define("tag-fit", TagFit);
+  }
+</script>

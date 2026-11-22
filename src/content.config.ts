@@ -64,6 +64,7 @@ type ProjectData = {
 	order?: number;
 	description: string;
 	image: string;
+	images: string[];
 	tags: string[];
 	link: ProjectLink[];
 	status: string;
@@ -130,6 +131,7 @@ const projectSchema: ZodType<ProjectData> = z.object({
 	order: z.number().optional(),
 	description: z.string().optional().default(""),
 	image: z.string().optional().default(""),
+	images: z.array(z.string()).optional().default([]),
 	tags: z.array(z.string()).optional().default([]),
 	link: z
 		.array(

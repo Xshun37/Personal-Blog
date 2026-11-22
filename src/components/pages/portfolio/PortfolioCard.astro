@@ -12,7 +12,8 @@ interface Props {
 	entry: CollectionEntry<"portfolio">;
 }
 const { entry } = Astro.props;
-const { title, description, image, tags, published, status, link } = entry.data;
+const { title, description, image, images, tags, published, status, link } =
+	entry.data;
 const id = removeFileExtension(entry.id);
 ---
 
@@ -21,6 +22,7 @@ const id = removeFileExtension(entry.id);
 	title={title}
 	description={description}
 	image={image}
+	images={images}
 	basePath={getFileDirFromPath(entry.filePath || "")}
 	tags={tags}
 	published={published}
