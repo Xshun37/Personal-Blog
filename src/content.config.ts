@@ -45,6 +45,11 @@ type KnowledgeData = {
 	tags: string[];
 };
 
+type SpecData = {
+	title?: string;
+	description?: string;
+};
+
 type ProjectLink = {
 	label: string;
 	icon: string;
@@ -100,11 +105,13 @@ const postsCollection: ContentCollection<PostData> = defineCollection({
 	}),
 });
 
-const specCollection: ContentCollection<Record<string, never>> =
-	defineCollection({
-		loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/spec" }),
-		schema: z.object({}),
-	});
+const specCollection: ContentCollection<SpecData> = defineCollection({
+	loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/spec" }),
+	schema: z.object({
+		title: z.string().optional(),
+		description: z.string().optional(),
+	}),
+});
 
 const dynamicCollection: ContentCollection<DynamicData> = defineCollection({
 	loader: glob({ pattern: "**/*.md", base: "./src/content/dynamic" }),
