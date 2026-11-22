@@ -1,8 +1,0 @@
----
-import { siteConfig } from "@/config";
-import { url } from "@/utils/url-utils";
-
-if (!siteConfig.pages.knowledge) return Astro.redirect(url("/404/"));
-
-return Astro.redirect(url("/knowledge/"), 301);
----
