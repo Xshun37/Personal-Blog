@@ -1,4 +1,7 @@
 ---
+import { Icon } from "astro-icon/components";
+import { marked } from "marked";
+import sanitizeHtml from "sanitize-html";
 import ButtonTag from "@/components/common/ButtonTag.astro";
 import { formatDateToYYYYMMDD } from "@/utils/date-utils";
 import {
@@ -13,21 +16,59 @@ interface Props {
 }
 
 const { entry } = Astro.props;
-const { title, description, tags, published, updated, draft } = entry.data;
+const { title, description, preview, tags, published, updated, draft } = entry.data;
 const category = getKnowledgeCategory(entry);
+const previewHtml = preview
+	? sanitizeHtml(marked.parse(preview, { async: false, breaks: true }), {
+			allowedTags: [...sanitizeHtml.defaults.allowedTags, "del"],
+			allowedAttributes: { a: ["href", "title"], ol: ["start"] },
+		})
+	: "";
+const visibleTags = tags.slice(0, 2);
+const remainingTags = tags.length - visibleTags.length;
 ---
 
-<article class="card-base flex flex-col gap-3 p-6 min-w-0" data-knowledge-card data-category={category} data-tags={JSON.stringify(tags)}>
-	<a href={getKnowledgeUrl(entry.id)} class="group block flex-1">
-		<h2 class="text-xl font-bold text-90 group-hover:text-(--primary) transition-colors break-words">{title}</h2>
-		{draft && <span class="text-sm text-30">草稿</span>}
-		{description && <p class="text-50 mt-2 line-clamp-3 break-words">{description}</p>}
-	</a>
-	<div class="flex flex-wrap items-center gap-2 text-sm text-30">
-		<a href={getKnowledgeFilterUrl("category", category)} class="hover:text-(--primary)">{category}</a>
-		<time datetime={(updated ?? published).toISOString()}>{formatDateToYYYYMMDD(updated ?? published)}</time>
-	</div>
-	{tags.length > 0 && <div class="flex flex-wrap gap-2">
-		{tags.map((tag) => <ButtonTag href={getKnowledgeFilterUrl("tag", tag)}>{tag}</ButtonTag>)}
-	</div>}
+<article class="card-base flex h-[22.1rem] min-w-0 flex-col gap-3 p-4 bg-[linear-gradient(145deg,color-mix(in_oklab,var(--primary)_12%,transparent),transparent_52%)]" data-knowledge-card data-category={category} data-tags={JSON.stringify(tags)}>
+	<header class="flex shrink-0 flex-col gap-2">
+		<div class="flex items-center gap-2 text-xs">
+			<a href={getKnowledgeFilterUrl("category", category)} class="inline-flex min-w-0 items-center gap-1.5 font-semibold text-(--btn-content) hover:underline">
+				<Icon name="material-symbols:folder-open" class="shrink-0 text-base" aria-hidden="true" />
+				<span class="truncate">{category}</span>
+			</a>
+			{draft && <span class="shrink-0 text-50">草稿</span>}
+		</div>
+		<a href={getKnowledgeUrl(entry.id)} class="group flex items-start justify-between gap-2 rounded-lg">
+			<h2 class="line-clamp-2 text-xl leading-snug font-bold tracking-tight text-90 group-hover:text-(--title-active) transition-colors wrap-anywhere">{title}</h2>
+			<span class="grid size-7 shrink-0 place-items-center rounded-lg bg-(--btn-regular-bg) text-(--btn-content) transition-colors group-hover:bg-(--btn-regular-bg-hover)" aria-hidden="true">
+				<Icon name="material-symbols:chevron-right-rounded" class="text-xl" />
+			</span>
+		</a>
+	</header>
+	{(previewHtml || description) && (
+		<div
+			class:list={[
+				"knowledge-preview prose prose-sm dark:prose-invert max-w-none min-h-0 flex-1 overflow-y-auto rounded-lg p-2.5 text-75 wrap-anywhere focus-visible:-outline-offset-2",
+				"[scrollbar-width:thin] [scrollbar-gutter:stable] [scrollbar-color:transparent_transparent] hover:[scrollbar-color:var(--scrollbar-bg)_transparent] focus-within:[scrollbar-color:var(--scrollbar-bg)_transparent]",
+				"prose-p:my-2 prose-ul:my-2 prose-ol:my-2 prose-ul:ps-4 prose-ol:ps-4 prose-li:my-1 prose-li:ps-0 [&_li::marker]:text-(--btn-content)",
+				"prose-blockquote:my-2 prose-blockquote:not-italic prose-blockquote:border-s-2 prose-blockquote:border-(--btn-content) prose-blockquote:[quotes:none] [&>:first-child]:mt-0 [&>:last-child]:mb-0",
+			]}
+			role="region"
+			tabindex="0"
+			aria-label={title + " · 预览"}
+		>
+			{previewHtml
+				? <Fragment set:html={previewHtml} />
+				: <p class="whitespace-pre-line">{description}</p>}
+		</div>
+	)}
+	<footer class="mt-auto flex shrink-0 flex-wrap items-center justify-between gap-x-2 gap-y-1.5 border-t border-(--line-divider) pt-2">
+		{visibleTags.length > 0 && <div class="flex min-w-0 flex-wrap items-center gap-1.5 [&_.tag-item]:max-w-full [&_.tag-item]:truncate [&_.tag-item]:px-2 [&_.tag-item]:py-1 [&_.tag-item]:text-xs">
+			{visibleTags.map((tag) => <ButtonTag href={getKnowledgeFilterUrl("tag", tag)}>{tag}</ButtonTag>)}
+			{remainingTags > 0 && <span class="text-xs text-50">+{remainingTags}</span>}
+		</div>}
+		<time class="ml-auto inline-flex shrink-0 items-center gap-1 text-xs text-50 tabular-nums" datetime={(updated ?? published).toISOString()}>
+			<Icon name="material-symbols:calendar-today-outline-rounded" class="text-sm" aria-hidden="true" />
+			{formatDateToYYYYMMDD(updated ?? published)}
+		</time>
+	</footer>
 </article>

@@ -1,9 +1,8 @@
 ---
-import KnowledgeTaxonomy from "@/components/pages/knowledge/KnowledgeTaxonomy.astro";
 import { siteConfig } from "@/config";
 import { url } from "@/utils/url-utils";
 
 if (!siteConfig.pages.knowledge) return Astro.redirect(url("/404/"));
----
 
-<KnowledgeTaxonomy kind="tag" />
+return Astro.redirect(url("/knowledge/"), 301);
+---

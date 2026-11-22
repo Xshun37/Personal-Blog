@@ -41,6 +41,7 @@ type KnowledgeData = {
 	updated?: Date;
 	draft: boolean;
 	description: string;
+	preview: string;
 	category: string;
 	tags: string[];
 };
@@ -157,6 +158,7 @@ const knowledgeCollection: ContentCollection<KnowledgeData> = defineCollection({
 		updated: z.date().optional(),
 		draft: z.boolean().optional().default(false),
 		description: z.string().trim().optional().default(""),
+		preview: z.string().trim().optional().default(""),
 		category: z.string().trim().optional().default(""),
 		tags: z.array(z.string().trim().min(1)).optional().default([]),
 	}),

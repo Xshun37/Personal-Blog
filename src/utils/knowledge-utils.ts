@@ -42,7 +42,7 @@ export function getKnowledgeFilterUrl(
 export function getKnowledgeTaxonomy(
 	entries: KnowledgeEntry[],
 	kind: KnowledgeTaxonomy,
-): { name: string; count: number; url: string }[] {
+): { name: string; count: number }[] {
 	const counts = new Map<string, number>();
 	for (const entry of entries) {
 		const names =
@@ -56,6 +56,5 @@ export function getKnowledgeTaxonomy(
 		.map(([name, count]) => ({
 			name,
 			count,
-			url: getKnowledgeFilterUrl(kind, name),
 		}));
 }

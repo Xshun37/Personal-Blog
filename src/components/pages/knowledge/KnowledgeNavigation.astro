@@ -1,0 +1,62 @@
+---
+import { Icon } from "astro-icon/components";
+import I18nKey from "@/i18n/i18nKey";
+import { i18n } from "@/i18n/translation";
+import {
+	getKnowledgeFilterUrl,
+	getKnowledgeTaxonomy,
+	type KnowledgeEntry,
+} from "@/utils/knowledge-utils";
+import { pathsEqual, url } from "@/utils/url-utils";
+
+interface Props {
+	entries: KnowledgeEntry[];
+}
+
+const { entries } = Astro.props;
+const homeUrl = url("/knowledge/");
+const blogHomeUrl = url("/");
+const isHome = pathsEqual(Astro.url.pathname, homeUrl);
+const categories = getKnowledgeTaxonomy(entries, "category").sort((a, b) => b.count - a.count);
+const tags = getKnowledgeTaxonomy(entries, "tag");
+const menus = [
+	{ kind: "category", label: i18n(I18nKey.more), all: i18n(I18nKey.allCategories), items: categories },
+	{ kind: "tag", label: i18n(I18nKey.tags), all: i18n(I18nKey.allTags), items: tags },
+] as const;
+const pillClass = "category-pill focus-ring-inset flex shrink-0 items-center justify-center whitespace-nowrap py-1.5 text-sm transition-colors duration-150";
+---
+
+<nav aria-label="知识导航" data-knowledge-navigation class="card-base relative z-10 mb-4 flex min-w-0 items-center gap-1.5 overflow-visible! p-2.5 sm:gap-2 sm:p-3 [&_.category-pill]:border-0!">
+	<a href={blogHomeUrl} aria-label={i18n(I18nKey.home)} class:list={[pillClass, "px-2.5 sm:px-3"]}>
+		<Icon name="material-symbols:home" class="text-lg" aria-hidden="true" />
+	</a>
+	<a href={homeUrl} data-knowledge-all data-active={isHome ? "" : undefined} aria-current={isHome ? "page" : undefined} class:list={[pillClass, "px-2.5 sm:px-4"]}>
+		{i18n(I18nKey.all)}
+		<span class="pill-count">{entries.length}</span>
+	</a>
+	<span class="w-px shrink-0 self-stretch bg-(--line-divider) opacity-50" aria-hidden="true"></span>
+	<div class="flex min-w-0 flex-1 gap-2 overflow-x-auto [scrollbar-width:none]">
+		{categories.map(({ name, count }) => (
+			<a href={getKnowledgeFilterUrl("category", name)} data-filter-kind="category" data-filter-value={name} class:list={[pillClass, "px-3 sm:px-4"]}>
+				{name}
+				<span class="pill-count">{count}</span>
+			</a>
+		))}
+	</div>
+	{menus.map(({ kind, label, all, items }) => (
+		<details name="knowledge-navigation-filters" data-knowledge-menu={kind} class="relative shrink-0">
+			<summary class:list={[pillClass, "list-none cursor-pointer px-2 sm:px-3 [&::-webkit-details-marker]:hidden"]}>
+				{label}
+				<Icon name="material-symbols:expand-more-rounded" class="text-base" aria-hidden="true" />
+			</summary>
+			<div class="absolute end-0 top-full mt-2 max-h-72 w-48 overflow-y-auto rounded-xl border border-(--line-divider) bg-(--float-panel-bg) p-1.5 shadow-xl sm:w-56">
+				{[{ name: "", count: undefined }, ...items].map(({ name, count }) => (
+					<a href={getKnowledgeFilterUrl(kind, name)} data-filter-kind={kind} data-filter-value={name} class="category-pill focus-ring-inset flex items-center justify-between rounded-lg px-3 py-2 text-sm">
+						<span class="min-w-0 wrap-anywhere">{name || all}</span>
+						{count !== undefined && <span class="pill-count shrink-0">{count}</span>}
+					</a>
+				))}
+			</div>
+		</details>
+	))}
+</nav>

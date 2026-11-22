@@ -2,7 +2,7 @@
 
 - 内容：`src/content/knowledge/**/*.md`，每个文件是一张卡片。
 - 配置：`src/config/knowledgeConfig.ts`，控制栏目标题和描述。
-- 全站文章分类栏保持在公共顶部；知识栏目使用“知识卡片 / 分类 / 标签”导航，不额外增加快捷栏。
+- 顶部导航中的「知识」直达卡片列表。知识页顶部的栏目栏提供博客主页、全部知识卡片、分类快捷入口、「更多」和标签筛选。
 - 全站滚动保留：`src/config/siteConfig.ts` 中的 `preserveScroll` 默认开启，适用于首页、文章、知识及其他站内页面。普通切换保留高度；新页面内容太短时回退到内容起点。后退/前进恢复历史位置，锚点和回到顶部保持原行为。手动滚动、连续点击或窗口尺寸变化会取消旧的定位任务。
 - 开关：`src/config/siteConfig.ts` 中的 `pages.knowledge`，也支持 `PUBLIC_PAGES_KNOWLEDGE=false`。
 - 导航：`src/config/navBarConfig.ts`，知识与文章、社交同级。
@@ -16,7 +16,12 @@
 ---
 title: 名词
 published: 2026-11-20
-description: 一句话解释。
+description: 用于页面摘要的一句话。
+preview: |-
+  **定义**：用几句话解释概念。
+
+  - 写一个能在卡片里快速读完的例子。
+  - 补充它常见的使用场景。
 category: 分类名称
 tags: [标签一, 标签二]
 draft: false
@@ -32,6 +37,8 @@ draft: false
 ```
 
 - `title`、`published` 必填；其他字段可省略。
+- `preview` 是列表卡片里的可滚动预览，支持分段、强调、列表和链接。较长的预览用 `|-` 写成多行，段落之间留空行。
+- `description` 是页面摘要。省略 `preview` 时，列表卡片显示 `description`。详情和推导直接写在 frontmatter 下方的 Markdown 正文。
 - `updated: 2026-11-21` 可选；列表优先按更新时间倒序排列。
 - 未填写分类时归入“未分类”，标签为数组。
 - `draft: true` 仅在开发环境显示；生产构建不生成详情、不计入分类和标签，也不进入 Pagefind。
@@ -42,10 +49,8 @@ draft: false
 ## 访问与发布
 
 - `/knowledge/`：卡片列表。
-- `/knowledge/categories/`：分类索引。
-- `/knowledge/tags/`：标签索引。
 - `/knowledge/<文件名或 slug>/`：详情页。
-- 分类、标签点击后在列表中筛选，需要浏览器启用 JavaScript；筛选条件保留在 URL 中，可分享。
+- 分类和标签可以组合筛选，需要浏览器启用 JavaScript。筛选条件保留在 URL 中，可分享。原分类和标签地址会跳转到知识列表。
 - 站内链接自动适配 Astro `base`，当前为 `/Personal-Blog/`。
 - 提交到 `master` 后沿用现有 GitHub Actions 部署，无需数据库或外部服务。
 

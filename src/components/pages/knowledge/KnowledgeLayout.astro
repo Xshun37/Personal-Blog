@@ -1,51 +1,179 @@
 ---
 import type { MarkdownHeading } from "astro";
 import { Icon } from "astro-icon/components";
+import KnowledgeNavigation from "@/components/pages/knowledge/KnowledgeNavigation.astro";
 import { knowledgeConfig } from "@/config";
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
-import { url } from "@/utils/url-utils";
+import { getKnowledgeEntries, type KnowledgeEntry } from "@/utils/knowledge-utils";
+import { pathsEqual, url } from "@/utils/url-utils";
 import "@/styles/pages/common.css";
 
 interface Props {
 	title?: string;
 	description?: string;
 	headings?: MarkdownHeading[];
+	entries?: KnowledgeEntry[];
 }
 
 const {
 	title = knowledgeConfig.title,
 	description = knowledgeConfig.description,
 	headings = [],
+	entries,
 } = Astro.props;
-const links = [
-	{ label: "知识卡片", path: "/knowledge/" },
-	{ label: i18n(I18nKey.categories), path: "/knowledge/categories/" },
-	{ label: i18n(I18nKey.tags), path: "/knowledge/tags/" },
-];
+const allEntries = entries ?? (await getKnowledgeEntries());
+const homeUrl = url("/knowledge/");
+const isHome = pathsEqual(Astro.url.pathname, homeUrl);
 ---
 
-<MainGridLayout title={title} description={description} headings={headings}>
-	<section class="page-shell knowledge-page">
-		<header class="card-base page-header">
-			<div class="page-heading">
-				<div class="page-icon" aria-hidden="true">
-					<Icon name="material-symbols:menu-book-rounded" />
+<MainGridLayout title={title} description={description} headings={headings} sectionNavigation>
+	<knowledge-browser class="block" data-home={isHome ? "" : undefined} data-home-path={homeUrl}>
+		<KnowledgeNavigation entries={allEntries} />
+		<section class="page-shell knowledge-page">
+			<header class="card-base page-header">
+				<div class="page-heading">
+					<div class="page-icon" aria-hidden="true">
+						<Icon name="material-symbols:menu-book-rounded" />
+					</div>
+					<div>
+						<h2>{title}</h2>
+						{description && <p>{description}</p>}
+					</div>
 				</div>
-				<div>
-					<h2>{title}</h2>
-					{description && <p>{description}</p>}
-				</div>
-			</div>
-			<nav class="col-span-full flex flex-wrap gap-2" aria-label={knowledgeConfig.title}>
-				{links.map(({ label, path }) => (
-					<a href={url(path)} class="category-pill px-4 py-1.5 text-sm transition-colors" data-active={Astro.url.pathname === url(path) ? "" : undefined} aria-current={Astro.url.pathname === url(path) ? "page" : undefined}>
-						{label}
-					</a>
-				))}
-			</nav>
-		</header>
-		<slot />
-	</section>
+			</header>
+			<slot />
+		</section>
+	</knowledge-browser>
 </MainGridLayout>
+
+<script>
+	const filterNames = ["category", "tag"] as const;
+	type FilterName = (typeof filterNames)[number];
+
+	class KnowledgeBrowser extends HTMLElement {
+		constructor() {
+			super();
+			this.addEventListener("click", this.handleClick);
+		}
+
+		connectedCallback() {
+			this.applyFilters();
+			window.addEventListener("popstate", this.applyFilters);
+			document.addEventListener("pointerdown", this.handleOutsideClick);
+			document.addEventListener("keydown", this.handleKeyDown);
+		}
+
+		disconnectedCallback() {
+			window.removeEventListener("popstate", this.applyFilters);
+			document.removeEventListener("pointerdown", this.handleOutsideClick);
+			document.removeEventListener("keydown", this.handleKeyDown);
+		}
+
+		private handleClick = (event: MouseEvent) => {
+			if (!this.hasAttribute("data-home") || event.defaultPrevented || event.button !== 0 ||
+				event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+			const target = event.target;
+			if (!(target instanceof Element)) return;
+
+			const link = target.closest<HTMLAnchorElement>("a[href]");
+			if (!link || (link.target && link.target !== "_self")) return;
+			const destination = new URL(link.href);
+			if (
+				destination.origin !== window.location.origin ||
+				destination.pathname.replace(/\/$/, "") !== this.dataset.homePath?.replace(/\/$/, "")
+			) return;
+
+			const kind = filterNames.find((name) => destination.searchParams.has(name));
+			if (kind && (link.hasAttribute("data-filter-kind") || link.closest("[data-knowledge-card]"))) {
+				event.preventDefault();
+				event.stopPropagation();
+				this.updateFilters({ [kind]: destination.searchParams.get(kind) ?? "" });
+				const menu = link.closest<HTMLDetailsElement>("[data-knowledge-menu]");
+				if (menu) {
+					menu.open = false;
+					menu.querySelector("summary")?.focus();
+				}
+			} else if (link.hasAttribute("data-knowledge-all") || link.hasAttribute("data-reset")) {
+				event.preventDefault();
+				event.stopPropagation();
+				this.updateFilters({ category: "", tag: "" });
+				if (link.hasAttribute("data-reset")) {
+					this.querySelector<HTMLElement>("[data-knowledge-all]")?.focus({ preventScroll: true });
+				}
+			}
+		};
+
+		private handleOutsideClick = (event: PointerEvent) => {
+			const target = event.target;
+			for (const menu of this.querySelectorAll<HTMLDetailsElement>("[data-knowledge-menu][open]")) {
+				if (target instanceof Node && !menu.contains(target)) menu.open = false;
+			}
+		};
+
+		private handleKeyDown = (event: KeyboardEvent) => {
+			if (event.key !== "Escape" || event.defaultPrevented) return;
+			const menu = this.querySelector<HTMLDetailsElement>("[data-knowledge-menu][open]");
+			if (!menu) return;
+			event.preventDefault();
+			menu.open = false;
+			menu.querySelector("summary")?.focus({ preventScroll: true });
+		};
+
+		private updateFilters(changes: Partial<Record<FilterName, string>>) {
+			const nextUrl = new URL(window.location.href);
+			for (const name of filterNames) {
+				const value = changes[name];
+				if (value === undefined) continue;
+				if (value) {
+					nextUrl.searchParams.set(name, value);
+				} else {
+					nextUrl.searchParams.delete(name);
+				}
+			}
+			if (nextUrl.href !== window.location.href) {
+				const state = window.history.state;
+				const relativeUrl = nextUrl.pathname + nextUrl.search + nextUrl.hash;
+				const nextState = state?.source === "swup" ? { ...state, url: relativeUrl } : state;
+				window.history.replaceState(nextState, "", nextUrl);
+			}
+			this.applyFilters();
+		}
+
+		private applyFilters = () => {
+			if (!this.hasAttribute("data-home")) return;
+			const params = new URLSearchParams(window.location.search);
+			const category = params.get("category");
+			const tag = params.get("tag");
+			const filtered = Boolean(category || tag);
+			let count = 0;
+			for (const card of this.querySelectorAll<HTMLElement>("[data-knowledge-card]")) {
+				const tags: string[] = JSON.parse(card.dataset.tags || "[]");
+				const visible = (!category || card.dataset.category === category) && (!tag || tags.includes(tag));
+				card.hidden = !visible;
+				if (visible) count++;
+			}
+
+			for (const link of this.querySelectorAll<HTMLElement>("[data-filter-kind]")) {
+				const current = params.get(link.dataset.filterKind ?? "") ?? "";
+				link.toggleAttribute("data-soft-active", link.dataset.filterValue === current);
+			}
+			for (const menu of this.querySelectorAll<HTMLElement>("[data-knowledge-menu]")) {
+				menu.querySelector("summary")?.toggleAttribute("data-soft-active", Boolean(params.get(menu.dataset.knowledgeMenu ?? "")));
+			}
+			const all = this.querySelector("[data-knowledge-all]");
+			all?.toggleAttribute("data-active", !filtered);
+			all?.setAttribute("aria-current", filtered ? "false" : "page");
+
+			const counter = this.querySelector("[data-count]");
+			if (counter) counter.textContent = String(count);
+			const reset = this.querySelector<HTMLElement>("[data-reset]");
+			if (reset) reset.hidden = !filtered;
+			const empty = this.querySelector<HTMLElement>("[data-empty]");
+			if (empty) empty.hidden = count > 0;
+		};
+	}
+
+	if (!customElements.get("knowledge-browser")) {
+		customElements.define("knowledge-browser", KnowledgeBrowser);
+	}
+</script>
