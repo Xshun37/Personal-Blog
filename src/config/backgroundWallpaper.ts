@@ -44,6 +44,8 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 			"assets/images/Backgrounds/raw-07.avif",
 			"assets/images/Backgrounds/raw-10.avif",
 			"assets/images/Backgrounds/raw-16.avif",
+			"assets/images/Backgrounds/raw-17.avif",
+			"assets/images/Backgrounds/raw-18.avif",
 		],
 		// 移动背景图片（支持单张或多张随机）
 		mobile: [
@@ -52,6 +54,8 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 			"assets/images/Backgrounds/raw-07.avif",
 			"assets/images/Backgrounds/raw-10.avif",
 			"assets/images/Backgrounds/raw-16.avif",
+			"assets/images/Backgrounds/raw-17.avif",
+			"assets/images/Backgrounds/raw-18.avif",
 		],
 		// 背景视频播放地址
 		// 支持单个视频路径（字符串）或多个视频循环（数组，参考上面壁纸配置）

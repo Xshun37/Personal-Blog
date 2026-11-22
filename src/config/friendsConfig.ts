@@ -8,7 +8,7 @@ export const friendsPageConfig: FriendsPageConfig = {
 	title: "友情链接",
 
 	// 页面描述文本，如果留空则使用 i18n 中的翻译
-	description: "",
+	description: " ",
 
 	// 是否显示底部自定义内容（friends.mdx 中的内容）
 	showCustomContent: false,
@@ -23,21 +23,29 @@ export const friendsPageConfig: FriendsPageConfig = {
 // 友链配置
 export const friendsConfig: FriendLink[] = [
 	{
-		title: "Firefly Docs",
-		// initial commit 里的原始友链图（docs 站点的 logo）
-		imgurl: "https://docs-firefly.cuteleaf.cn/logo.png",
-		desc: "Firefly主题模板文档",
-		siteurl: "https://docs-firefly.cuteleaf.cn",
-		tags: ["Docs"],
-		weight: 7,
-		enabled: true,
-	},
-	{
 		title: "东方幻想指南",
 		imgurl: "/assets/images/friends/fantasyguide.webp",
 		desc: "北京大学东方例会，迄今已举办18届",
 		siteurl: "https://fantasyguide.cn/",
-		tags: ["ACGN"],
+		tags: ["ACGN", "Organization"],
+		weight: 9,
+		enabled: true,
+	},
+	{
+		title: "元火OriginalFire",
+		imgurl: "/assets/images/friends/Originalfire.png",
+		desc: "北京大学学生元火动漫社",
+		siteurl: "https://space.bilibili.com/347720468",
+		tags: ["ACGN", "Organization"],
+		weight: 10,
+		enabled: true,
+	},
+	{
+		title: "水月Mizuki界隈",
+		imgurl: "/assets/images/friends/mizuki.png",
+		desc: "北京大学WOTA艺团体",
+		siteurl: "https://space.bilibili.com/270785847",
+		tags: ["ACGN", "Organization"],
 		weight: 8,
 		enabled: true,
 	},

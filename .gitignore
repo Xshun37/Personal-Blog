@@ -50,3 +50,6 @@ package/
 
 # 工具
 tools
+
+# Local content management workspace
+/local-admin/
