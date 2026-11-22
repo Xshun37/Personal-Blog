@@ -1,0 +1,73 @@
+---
+import { Icon } from "astro-icon/components";
+import I18nKey from "@/i18n/i18nKey";
+import { i18n } from "@/i18n/translation";
+import type { Category } from "@/utils/content-utils";
+import "@/styles/pages/card-grid.css";
+
+interface Props {
+	categories: Category[];
+	title: string;
+	entryCountLabel: string;
+}
+
+const { categories, title, entryCountLabel } = Astro.props;
+const totalEntries = categories.reduce((sum, category) => sum + category.count, 0);
+---
+
+<!-- 页面标题 -->
+<div class="card-base px-8 py-6 mb-4">
+    <div class="text-2xl font-bold text-(--primary) mb-2">
+        {title}
+    </div>
+    <p class="text-30 text-sm">
+        {i18n(I18nKey.allCategories)} · {totalEntries} {entryCountLabel}
+    </p>
+</div>
+
+<!-- 分类卡片列表 -->
+<div class="card-grid mb-4" style="--card-grid-min-width: min(100%, 280px)">
+    {
+        categories.map((category, index) => (
+            <a
+                href={category.url}
+                class="card-base p-6 flex items-center gap-4 group onload-animation"
+                style={`animation-delay: calc(var(--content-delay) + ${index * 50}ms);`}
+            >
+                <div class="shrink-0 w-14 h-14 rounded-full bg-(--primary)/10 group-hover:bg-(--primary)/20 flex items-center justify-center transition-colors">
+                    <Icon
+                        name="material-symbols:folder-open"
+                        class="text-3xl text-(--primary)"
+                    />
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h2 class="text-lg font-bold text-90 break-words group-hover:text-(--primary) transition-colors" title={category.name}>
+                        {category.name}
+                    </h2>
+                    <p class="text-sm text-30 mt-1 whitespace-nowrap group-hover:text-(--primary)/60 transition-colors">
+                        {category.count} {entryCountLabel}
+                    </p>
+                </div>
+                <div class="shrink-0">
+                    <Icon
+                        name="material-symbols:chevron-right-rounded"
+                        class="text-2xl text-30 group-hover:text-(--primary) transition-colors "
+                    />
+                </div>
+            </a>
+        ))
+    }
+</div>
+
+<!-- 空状态 -->
+{
+    categories.length === 0 && (
+        <div class="card-base px-8 py-12 text-center">
+            <Icon
+                name="material-symbols:folder-off"
+                class="text-5xl text-30 mx-auto mb-4"
+            />
+            <p class="text-30">{i18n(I18nKey.noData)}</p>
+        </div>
+    )
+}
