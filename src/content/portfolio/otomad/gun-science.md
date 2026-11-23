@@ -1,11 +1,11 @@
 ---
 title: 电棍：♿科学
-slug: gun-science
+slug: otomad-gun-science
 published: 2025-03-26
 draft: false
 order: 100
 description: 第一次做了音MAD的PV，试图模拟3774.的动画，差强人意！音频由不觉完成，曲绘描改由杨薇柏完成，神作来袭♿♿♿
-image: "images/gun-science.png"
+image: "images/otomad-gun-science.png"
 status: "published"
 tags: 
   - 音MAD
