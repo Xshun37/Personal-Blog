@@ -4,9 +4,19 @@ import { i18n } from "@i18n/translation";
 import { getCategoryUrl } from "@utils/url-utils";
 
 // // Retrieve posts and sort them by publication date
+/** draft 支持 true / false / "dead"：
+ * - false：正常展示
+ * - true：仅开发模式展示
+ * - "dead"：任何模式都不展示，也不生成页面
+ */
+export function isPostVisible(data: { draft?: boolean | "dead" }): boolean {
+	if (data.draft === "dead") return false;
+	return import.meta.env.PROD ? data.draft !== true : true;
+}
+
 async function getRawSortedPosts() {
 	const allBlogPosts = await getCollection("posts", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
+		return isPostVisible(data);
 	});
 
 	const sorted = allBlogPosts.sort((a, b) => {
@@ -61,7 +71,7 @@ export async function getSortedProjects(): Promise<
 	CollectionEntry<"projects">[]
 > {
 	const allProjects = await getCollection("projects", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
+		return isPostVisible(data);
 	});
 
 	return allProjects.sort((a, b) => {
@@ -158,7 +168,7 @@ export type Tag = {
 
 export async function getTagList(): Promise<Tag[]> {
 	const allBlogPosts = await getCollection<"posts">("posts", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
+		return isPostVisible(data);
 	});
 
 	const countMap: { [key: string]: number } = {};
@@ -185,7 +195,7 @@ export type Category = {
 
 export async function getCategoryList(): Promise<Category[]> {
 	const allBlogPosts = await getCollection<"posts">("posts", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
+		return isPostVisible(data);
 	});
 	const count: { [key: string]: number } = {};
 	allBlogPosts.forEach((post: { data: { category: string | null } }) => {
@@ -261,7 +271,7 @@ export async function getRelatedPosts(
 	maxCount = 5,
 ): Promise<PostForList[]> {
 	const allPosts = await getCollection<"posts">("posts", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
+		return isPostVisible(data);
 	});
 
 	// 排除自身和加密文章
