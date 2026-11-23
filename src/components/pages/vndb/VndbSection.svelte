@@ -30,15 +30,13 @@ const {
 const safeItems = $derived(filterNsfw(items, nsfw, isVndbNsfw));
 
 const filterCounts = $derived.by(() => {
-	let voted = 0;
 	let unvoted = 0;
 	let notes = 0;
 	for (const item of safeItems) {
-		if (item.vote != null) voted += 1;
-		else unvoted += 1;
+		if (item.vote == null) unvoted += 1;
 		if (item.notes) notes += 1;
 	}
-	return { voted, unvoted, notes };
+	return { unvoted, notes };
 });
 
 const filters = $derived.by(() => {
@@ -48,11 +46,6 @@ const filters = $derived.by(() => {
 			value: "all",
 			label: i18n(I18nKey.vndbFilterAll),
 			count: safeItems.length,
-		},
-		{
-			value: "voted",
-			label: i18n(I18nKey.vndbFilterVoted),
-			count: counts.voted,
 		},
 		{
 			value: "unvoted",
@@ -72,8 +65,6 @@ let currentPage = $state(1);
 
 const filteredItems = $derived.by(() => {
 	if (activeFilter === "all") return safeItems;
-	if (activeFilter === "voted")
-		return safeItems.filter((item) => item.vote != null);
 	if (activeFilter === "unvoted")
 		return safeItems.filter((item) => item.vote == null);
 	if (activeFilter === "notes") return safeItems.filter((item) => item.notes);

@@ -21,7 +21,7 @@ const pages = resolvePageToggles({
 	// ── 我的 (My) ──────────────────────────────────
 
 	// 动态页面开关
-	dynamic: false,
+	dynamic: true,
 	// 项目展示页开关
 	projects: true,
 	// 作品集页面开关
@@ -35,7 +35,7 @@ const pages = resolvePageToggles({
 	// 番组计划页面开关
 	bangumi: false,
 	// VNDB页面开关
-	vndb: false,
+	vndb: true,
 	// MyAnimeList页面开关
 	mal: false,
 
@@ -56,7 +56,7 @@ export const siteConfig: SiteConfig = {
 	site_url: "https://xshun37.github.io",
 
 	// 站点描述
-	description: "",
+	description: "Xshun Blog",
 
 	// 站点关键词
 	keywords: ["生物学", "信息学", "ACGN", "博客"],
@@ -72,7 +72,7 @@ export const siteConfig: SiteConfig = {
 	// 页面整体宽度（单位：rem）
 	// 数值越大可以让页面内容区域更宽
 	// 在使用单侧栏边栏时，建议调低一些宽度以获得更好的视觉效果。
-	pageWidth: 100,
+	pageWidth: 81,
 
 	// 全站普通切页保留滚动高度；短页面安全回退，历史记录和锚点正常恢复。
 	preserveScroll: true,
@@ -180,11 +180,11 @@ export const siteConfig: SiteConfig = {
 			// 是否显示标签
 			showTags: true,
 			// 标签数量，设为 0 则不限制
-			tagCount: 3,
+			tagCount: 0,
 			// 是否显示字数
-			showWords: false,
+			showWords: true,
 			// 是否显示阅读时间
-			showReadingTime: false,
+			showReadingTime: true,
 		},
 		// 底部 PostStats 统计信息显示控制
 		// 如果tagsPosition设置为"bottom"，则stats将不显示
@@ -199,7 +199,7 @@ export const siteConfig: SiteConfig = {
 		// 网格布局配置，仅在 defaultMode 为 "grid" 或允许切换布局时生效
 		grid: {
 			// 是否开启瀑布流布局，同时有封面图和无封面图的混合文章推荐开启
-			masonry: false,
+			masonry: true,
 			// 网格模式卡片最小宽度(px)，浏览器根据容器宽度自动计算列数
 			columnWidth: 320,
 			// 网格模式封面是否撑满卡片贴边
@@ -236,7 +236,7 @@ export const siteConfig: SiteConfig = {
 		// 是否显示相关文章推荐
 		relatedPosts: true,
 		// 是否显示随机文章推荐
-		randomPosts: true,
+		randomPosts: false,
 		// OpenGraph图片功能，注意开启后要渲染很长时间，不建议本地调试的时候开启
 		generateOgImages: true,
 		// 沉浸阅读配置：电脑端文章详情页右下角按钮，进入后只留文章卡片+左侧目录
@@ -285,11 +285,11 @@ export const siteConfig: SiteConfig = {
 	// ── VNDB配置 ──────────────────────────────────
 	vndb: {
 		// VNDB 用户 ID
-		userId: "u358128",
+		userId: "u369863",
 		// 数据模式：static=构建时获取，dynamic=客户端实时获取
 		// static 模式在构建时获取数据并静态渲染，部署后数据不更新
 		// dynamic 模式在浏览器中实时请求 API，始终显示最新数据
-		mode: "static",
+		mode: "dynamic",
 		// 构建时下载并压缩封面到 public/vndb-covers，图片由本站服务器提供
 		downloadCovers: false,
 		// VNDB API 地址
@@ -299,7 +299,7 @@ export const siteConfig: SiteConfig = {
 		// 私密列表访问令牌，仅 static 模式下使用；不要把真实令牌提交到公开仓库！
 		apiToken: "",
 		// NSFW 处理："off" 不过滤 | "blur" 仅模糊封面 | "hide" 隐藏条目
-		nsfw: "hide",
+		nsfw: "blur",
 	},
 
 	// ── MyAnimeList配置 ──────────────────────────────────
