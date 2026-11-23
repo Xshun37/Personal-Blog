@@ -15,6 +15,7 @@ import { isVndbNsfw } from "@/utils/nsfw-utils";
 import {
 	buildVndbTabs,
 	fetchVndbUlist,
+	sortVndbByReleased,
 	type VndbTab,
 } from "@/utils/vndb-utils";
 
@@ -96,6 +97,7 @@ if (!isDynamic && isUserIdConfigured) {
 			}
 		}
 
+		allItems = sortVndbByReleased(allItems);
 		vndbData.all = allItems;
 		tabs.push(...buildVndbTabs(allItems));
 	} catch (error) {

@@ -11,6 +11,7 @@ import {
 	buildVndbTabs,
 	fetchVndbUlist,
 	getVndbItemsForTab,
+	sortVndbByReleased,
 	type VndbTab,
 } from "@/utils/vndb-utils";
 import VndbSection from "./VndbSection.svelte";
@@ -97,6 +98,8 @@ async function loadDynamicData() {
 		if (nsfwMode === "hide") {
 			allItems = allItems.filter((item) => !isVndbNsfw(item));
 		}
+
+		allItems = sortVndbByReleased(allItems);
 
 		if (allItems.length === 0) {
 			fetchLoading = false;

@@ -41,6 +41,8 @@ export async function fetchVndbUlist(
 			fields: VNDB_ULIST_FIELDS,
 			results: options.results,
 			page: options.page,
+			sort: "released",
+			reverse: true,
 		}),
 	});
 
@@ -69,6 +71,17 @@ export async function fetchVndbUlist(
 	};
 }
 
+/** 按 VNDB 发售日期从新到旧排序；无发售日期的排在最后 */
+export function sortVndbByReleased(items: VndbUlistEntry[]): VndbUlistEntry[] {
+	const releasedTime = (item: VndbUlistEntry): number => {
+		const released = item.vn?.released;
+		if (!released) return Number.NEGATIVE_INFINITY;
+		const time = Date.parse(released);
+		return Number.isNaN(time) ? Number.NEGATIVE_INFINITY : time;
+	};
+	return [...items].sort((a, b) => releasedTime(b) - releasedTime(a));
+}
+
 export type VndbTab = {
 	id: string;
 	name: string;
@@ -82,6 +95,9 @@ const VNDB_LABEL_ORDER = [
 	"stalled",
 	"dropped",
 ];
+
+// 不在页面上展示的 VNDB 自定义标签（例如个人列表里的 "Voted"）
+const VNDB_HIDDEN_LABELS = new Set(["voted"]);
 
 export function normalizeVndbLabel(label: string): string {
 	const lower = label.trim().toLowerCase();
@@ -136,7 +152,7 @@ export function buildVndbTabs(items: VndbUlistEntry[]): VndbTab[] {
 		}
 	}
 	for (const [key, label] of labelMap) {
-		if (!VNDB_LABEL_ORDER.includes(key)) {
+		if (!VNDB_LABEL_ORDER.includes(key) && !VNDB_HIDDEN_LABELS.has(key)) {
 			tabs.push({
 				id: key,
 				name: label,
