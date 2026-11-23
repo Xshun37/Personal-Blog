@@ -82,7 +82,10 @@ const postsCollection: ContentCollection<PostData> = defineCollection({
 		title: z.string(),
 		published: z.date(),
 		updated: z.date().optional(),
-		draft: z.union([z.boolean(), z.literal("dead")]).optional().default(false),
+		draft: z
+			.union([z.boolean(), z.literal("dead")])
+			.optional()
+			.default(false),
 		description: z.string().optional().default(""),
 		image: z.string().optional().default(""),
 		tags: z.array(z.string()).optional().default([]),
