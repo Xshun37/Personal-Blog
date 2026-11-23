@@ -1,9 +1,10 @@
 ---
 title: Firefly 简单使用指南
 published: 1970-01-02
+draft: "dead"
 pinned: true
 description: "如何使用 Firefly 博客模板。"
-image: "./cover.avif"
+image: ""
 tags: ["Firefly", "博客", "Markdown", "指南"]
 category: 博客指南
 series: "Firefly 功能示例"
@@ -21,7 +22,7 @@ seriesOrder: 1
 title: 我的第一篇博客文章
 published: 2023-09-09
 description: 这是我新 Astro 博客的第一篇文章。
-image: ./cover.jpg
+image: ""
 tags: [前端, 开发]
 category: 前端开发
 draft: false

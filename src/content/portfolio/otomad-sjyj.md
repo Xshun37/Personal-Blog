@@ -15,6 +15,9 @@ link:
   - label: "BiliBili"
     icon: "fa7-brands:bilibili"
     value: "https://www.bilibili.com/video/BV1CZE5zyEKc"
+  - label: "组曲"
+    icon: "fa7-brands:bilibili"
+    value: "https://www.bilibili.com/video/BV1q8ExzYEVN"
 ---
 
 > [!NOTE]
@@ -30,6 +33,8 @@ link:
 
 ## 成片
 
+### 音MAD
+
 <iframe
   src="//player.bilibili.com/player.html?bvid=BV1CZE5zyEKc&autoplay=0&high_quality=1&danmaku=0"
   style="border:0;width:100%;aspect-ratio:16/9"
@@ -37,3 +42,11 @@ link:
   loading="lazy">
 </iframe>
 
+### 组曲
+
+<iframe
+  src="//player.bilibili.com/player.html?bvid=BV1q8ExzYEVN&autoplay=0&high_quality=1&danmaku=0"
+  style="border:0;width:100%;aspect-ratio:16/9"
+  allowfullscreen
+  loading="lazy">
+</iframe>

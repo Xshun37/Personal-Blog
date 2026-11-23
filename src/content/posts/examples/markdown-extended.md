@@ -1,6 +1,7 @@
 ---
 title: Markdown 扩展功能
 published: 1970-01-01
+draft: "dead"
 updated: 1970-01-01
 description: "了解 Firefly 中的 Markdown 功能"
 image: ""
@@ -47,7 +48,6 @@ export const siteConfig: SiteConfig = {
 
 这是 GitHub 官方支持的 5 种基本类型。
 
-![GitHub](./images/github.avif)
 
 **基本语法**
 
@@ -168,7 +168,6 @@ export const siteConfig: SiteConfig = {
 ```
 </details>
 
-![Obsidian](./images/obsidian.avif)
 
 ---
 
@@ -200,7 +199,6 @@ export const siteConfig: SiteConfig = {
 ```
 </details>
 
-![VitePress](./images/vitepress.avif)
 
 ---
 
@@ -241,7 +239,6 @@ export const siteConfig: SiteConfig = {
 
 </details>
 
-![Docusaurus](./images/docusaurus.avif)
 
 ---
 
@@ -264,18 +261,12 @@ export const siteConfig: SiteConfig = {
 **图注恒定底端对齐：** 不论上面的图片长宽如何变化，在同一行的所有图像解释文字（图注）都会对标到一条完美的水平基线上了。
 
 [grid]
-![示例图片一](./images/firefly1.avif)
-![示例图片二](./images/firefly2.avif)
-![示例图片二](./images/firefly3.avif)
 [/grid]
 
 **基本语法**
 
 ```markdown
 [grid]
-![示例图片一](./images/firefly1.avif)
-![示例图片二](./images/firefly2.avif)
-![示例图片二](./images/firefly3.avif)
 [/grid]
 ```
 
