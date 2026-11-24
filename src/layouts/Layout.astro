@@ -12,6 +12,7 @@ import MusicPlayerView from "@components/features/MusicPlayerView.astro";
 import SakuraEffect from "@components/features/SakuraEffect.astro";
 import WavesEffect from "@components/features/WavesEffect.astro";
 import ConfigCarrier from "@components/layout/ConfigCarrier.astro";
+import FloatingTooltip from "@components/misc/FloatingTooltip.astro";
 import BrowserChrome from "@/components/layout/BrowserChrome.astro";
 
 import {
@@ -583,6 +584,9 @@ const ogImageAlt = propsOgImageAlt ?? pageTitle;
 
     <!-- GitHub 卡片客户端实时补全（forks/stars） -->
     <GithubCardManager />
+
+    <!-- 全局浮动提示（:tip） -->
+    <FloatingTooltip />
   </body>
 </html>
 

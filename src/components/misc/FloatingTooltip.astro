@@ -1,0 +1,96 @@
+---
+// 全局浮动 tooltip：把 [data-tip] 的提示挂到 body 上，避免被卡片 overflow 裁切
+---
+
+<script>
+	const TOOLTIP_ID = "floating-tip";
+	let tooltip: HTMLDivElement | null = null;
+
+	function ensureTooltip() {
+		if (tooltip) return tooltip;
+		tooltip = document.createElement("div");
+		tooltip.id = TOOLTIP_ID;
+		tooltip.className = "floating-tip";
+		tooltip.setAttribute("role", "tooltip");
+		document.body.appendChild(tooltip);
+		return tooltip;
+	}
+
+	function showTooltip(target: Element) {
+		const text = target.getAttribute("data-tip");
+		if (!text) return;
+
+		const el = ensureTooltip();
+		const rect = target.getBoundingClientRect();
+		const source = target.querySelector(".hover-tip-source");
+
+		if (source) {
+			el.innerHTML = source.innerHTML;
+		} else {
+			el.textContent = text;
+		}
+		el.style.top = "0px";
+		el.style.left = "0px";
+		el.classList.add("is-visible");
+
+		const width = el.offsetWidth;
+		const height = el.offsetHeight;
+		const margin = 8;
+
+		let top = rect.top - height - margin;
+		if (top < margin) top = rect.bottom + margin;
+
+		let left = rect.left + rect.width / 2 - width / 2;
+		const maxLeft = window.innerWidth - width - margin;
+		left = Math.max(margin, Math.min(left, maxLeft));
+
+		el.style.top = `${Math.round(top)}px`;
+		el.style.left = `${Math.round(left)}px`;
+	}
+
+	function hideTooltip() {
+		tooltip?.classList.remove("is-visible");
+	}
+
+	function targetFromEvent(event: Event): Element | null {
+		const target = event.target;
+		if (!(target instanceof Element)) return null;
+		return target.closest("[data-tip]");
+	}
+
+	document.addEventListener("pointerover", (event) => {
+		const target = targetFromEvent(event);
+		if (!target) return;
+		if (
+			event.relatedTarget instanceof Node &&
+			target.contains(event.relatedTarget)
+		) {
+			return;
+		}
+		showTooltip(target);
+	});
+
+	document.addEventListener("pointerout", (event) => {
+		const target = targetFromEvent(event);
+		if (!target) return;
+		if (
+			event.relatedTarget instanceof Node &&
+			target.contains(event.relatedTarget)
+		) {
+			return;
+		}
+		hideTooltip();
+	});
+
+	document.addEventListener("focusin", (event) => {
+		const target = targetFromEvent(event);
+		if (target) showTooltip(target);
+	});
+
+	document.addEventListener("focusout", () => {
+		hideTooltip();
+	});
+
+	document.addEventListener("scroll", hideTooltip, true);
+	window.addEventListener("resize", hideTooltip);
+</script>

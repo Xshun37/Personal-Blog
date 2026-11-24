@@ -42,6 +42,8 @@ import { rehypeDiagramPanZoom } from "./src/plugins/rehype-diagram-panzoom.mjs";
 import rehypeEmailProtection from "./src/plugins/rehype-email-protection.mjs";
 import rehypeExternalLinks from "./src/plugins/rehype-external-links.mjs";
 import rehypeFigure from "./src/plugins/rehype-figure.mjs";
+import { rehypeHoverTip } from "./src/plugins/rehype-hover-tip.mjs";
+import { rehypeKnowledgeLink } from "./src/plugins/rehype-knowledge-link.mjs";
 import rehypeImageReferrerPolicy from "./src/plugins/rehype-image-referrerpolicy.mjs";
 import { rehypeMermaid } from "./src/plugins/rehype-mermaid.mjs";
 import { rehypePlantuml } from "./src/plugins/rehype-plantuml.mjs";
@@ -66,10 +68,12 @@ const adapter = process.env.CF_WORKERS
 	: undefined;
 
 // https://astro.build/config
+const SITE_BASE = "/Personal-Blog/";
+
 export default defineConfig({
 	site: siteConfig.site_url,
 
-	base: "/Personal-Blog/",
+	base: SITE_BASE,
 	trailingSlash: "always",
 
 	// 字体配置 - 只加载实际使用的字体，跳过未引用的以加快构建
@@ -311,6 +315,8 @@ export default defineConfig({
 				rehypePlantuml,
 				rehypeDiagramPanZoom,
 				rehypeFigure,
+				rehypeHoverTip,
+				[rehypeKnowledgeLink, { base: SITE_BASE }],
 				[
 					rehypeImageReferrerPolicy,
 					{ domains: siteConfig.imageOptimization?.noReferrerDomains || [] },

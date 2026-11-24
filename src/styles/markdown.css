@@ -227,3 +227,152 @@ body.wallpaper-transparent .custom-md {
   }
 }
 
+/* :tip[文字]{info="详情"} 悬浮提示（tooltip 由 FloatingTooltip 组件挂到 body 上） */
+.custom-md .hover-tip {
+	position: relative;
+	cursor: help;
+	border-bottom: 1px dashed var(--link-underline);
+}
+
+.custom-md .hover-tip-source {
+	display: none !important;
+}
+
+.floating-tip .katex {
+	font-size: 1em;
+}
+
+/* 全局浮动 tooltip，避免被文章卡片 overflow 裁切 */
+.floating-tip {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: var(--z-tooltip);
+	width: max-content;
+	max-width: min(22rem, calc(100vw - 1rem));
+	padding: 0.5rem 0.75rem;
+	border: 1px solid var(--line-divider);
+	border-radius: var(--radius-md);
+	background: var(--card-bg);
+	color: var(--btn-content);
+	font-size: 0.8125rem;
+	line-height: 1.5;
+	text-align: left;
+	white-space: normal;
+	box-shadow: 0 8px 24px rgb(0 0 0 / 18%);
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transition: opacity 0.12s ease;
+}
+
+.floating-tip.is-visible {
+	opacity: 1;
+	visibility: visible;
+}
+
+/* :knowledge[关键词]{id="knowledge-card"} 内联知识卡片 */
+.custom-md .knowledge-ref {
+	position: relative;
+	display: inline-block;
+	color: var(--primary);
+	cursor: help;
+	border-bottom: 1px dashed color-mix(in oklab, var(--primary) 55%, transparent);
+}
+
+.custom-md .knowledge-ref.is-missing {
+	color: var(--btn-content);
+	border-bottom-color: var(--line-divider);
+}
+
+.custom-md .knowledge-popover {
+	position: absolute;
+	left: 50%;
+	bottom: calc(100% + 0.55rem);
+	z-index: var(--z-tooltip);
+	display: flex;
+	width: max-content;
+	max-width: min(20rem, 82vw);
+	flex-direction: column;
+	gap: 0.35rem;
+	padding: 0.7rem 0.85rem;
+	border: 1px solid var(--line-divider);
+	border-radius: var(--radius-md);
+	background: var(--card-bg);
+	color: var(--btn-content);
+	font-size: 0.8125rem;
+	line-height: 1.55;
+	text-align: left;
+	white-space: normal;
+	box-shadow: 0 10px 28px rgb(0 0 0 / 20%);
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transform: translateX(-50%) translateY(0.25rem);
+	transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+}
+
+.custom-md .knowledge-ref:hover .knowledge-popover,
+.custom-md .knowledge-ref:focus-visible .knowledge-popover,
+.custom-md .knowledge-ref:focus-within .knowledge-popover {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
+	transform: translateX(-50%) translateY(0);
+}
+
+.custom-md .knowledge-popover-title {
+	font-weight: 700;
+	color: var(--title-active);
+}
+
+.custom-md .knowledge-popover-preview {
+	display: block;
+	max-height: 11rem;
+	overflow: auto;
+	color: var(--btn-content);
+	opacity: 0.9;
+}
+
+.custom-md .knowledge-preview-line {
+	display: block;
+}
+
+.custom-md .knowledge-preview-line + .knowledge-preview-line {
+	margin-top: 0.15rem;
+}
+
+.custom-md .knowledge-preview-bullet {
+	display: inline-block;
+	min-width: 1.05em;
+	color: var(--btn-content);
+	opacity: 0.65;
+}
+
+.custom-md .knowledge-popover-preview strong {
+	color: var(--title-active);
+}
+
+.custom-md .knowledge-popover-preview blockquote {
+	margin: 0.3rem 0;
+	padding-left: 0.6rem;
+	border-left: 2px solid var(--line-divider);
+	opacity: 0.85;
+}
+
+.custom-md .knowledge-popover-meta {
+	font-size: 0.75rem;
+	color: var(--btn-content);
+	opacity: 0.6;
+}
+
+.custom-md .knowledge-popover-link {
+	margin-top: 0.15rem;
+	font-weight: 600;
+	color: var(--primary);
+	text-decoration: none;
+}
+
+.custom-md .knowledge-popover-link:hover {
+	text-decoration: underline;
+}
