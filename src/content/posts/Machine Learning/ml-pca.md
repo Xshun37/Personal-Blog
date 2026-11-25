@@ -1,6 +1,7 @@
 ---
 title: "PCA: Principal Component Analysis"
 published: 2026-11-25
+updated: 2026-11-25
 draft: false
 pinned: false
 description: "PCA 是一种极为常用且经典的无监督学习算法，为高维数据的降维表示提供了可能。"
@@ -46,6 +47,7 @@ $$
 
 其中每一个 $x_i$ 都代表数据的一个特征，$d$ 表示数据的维度(dimension)。上标表示这是我们数据集里的第 $i$ 个数据。
 
+> [!note]
 > 比如，对于一份单细胞转录组学数据，由于测序会返回上万个基因的表达量，此时每个细胞就对应有被测序的基因数这么多个特征。
 > 
 > $$
@@ -54,6 +56,7 @@ $$
 
 每一份数据需要用如此大量的特征进行表示，而人类最多只能接受和理解三维场景下的可视化，因此我们希望对数据进行降维。这种降维不仅可以让数据表示更加清晰易懂，甚至可能指出一些数据形成的底层逻辑。
 
+> [!important]
 > **流形假设(Manifold Hypothesis)**
 > 
 > 我们认为，虽然我们用高维向量表示我们的数据，但真实世界的数据并非均匀地充满整个高维空间，而是集中分布在一个低维的、局部近似平坦的“曲面”上。 这个低维曲面就叫**流形(manifold)**。
@@ -209,16 +212,22 @@ $$
 
 可见，寻找一个:tip[主成分]{info = "我们到目前为止，都还没有引入如何衡量“第一/最大主成分”，因此这里和下面的许多结论都适用于所有主成分"}竟然恰好就是在最大化所有样本被投影后的随机变量的方差！这也就是为什么，我们称这个行为是最大化投影方差。而且，这一点非常符合我们的直觉，可以尝试旋转坐标轴，让所有点垂直投影到新的坐标轴上。如果我们想寻找主成分，确实就需要放大这些投影的长度！
 
+<figure style="margin:1.5rem 0;padding:1rem;border:1px solid rgba(128,128,128,.25);border-radius:12px;">
+<svg viewBox="0 0 500 215" width="100%" role="img" aria-label="两个投影方向的比较" xmlns="http://www.w3.org/2000/svg"><g transform="translate(125 100)"><path d="M-100 0H100 M0 -70V70" stroke="currentColor" opacity=".15" fill="none"/><line x1="-90.63" y1="-42.26" x2="90.63" y2="42.26" stroke="#0d9488" stroke-width="2"/><line x1="-72" y1="36.0" x2="-45.35" y2="-21.15" stroke="#d97706" stroke-dasharray="3 3" opacity=".8"/><circle cx="-45.35" cy="-21.15" r="3" fill="#0d9488"/><circle cx="-72" cy="36.0" r="4" fill="#64748b"/><line x1="-48" y1="38.400000000000006" x2="-24.72" y2="-11.53" stroke="#d97706" stroke-dasharray="3 3" opacity=".8"/><circle cx="-24.72" cy="-11.53" r="3" fill="#0d9488"/><circle cx="-48" cy="38.400000000000006" r="4" fill="#64748b"/><line x1="-24" y1="4.800000000000001" x2="-17.87" y2="-8.34" stroke="#d97706" stroke-dasharray="3 3" opacity=".8"/><circle cx="-17.87" cy="-8.34" r="3" fill="#0d9488"/><circle cx="-24" cy="4.800000000000001" r="4" fill="#64748b"/><line x1="-12.0" y1="16.799999999999997" x2="-3.42" y2="-1.60" stroke="#d97706" stroke-dasharray="3 3" opacity=".8"/><circle cx="-3.42" cy="-1.60" r="3" fill="#0d9488"/><circle cx="-12.0" cy="16.799999999999997" r="4" fill="#64748b"/><line x1="12.0" y1="-16.799999999999997" x2="3.42" y2="1.60" stroke="#d97706" stroke-dasharray="3 3" opacity=".8"/><circle cx="3.42" cy="1.60" r="3" fill="#0d9488"/><circle cx="12.0" cy="-16.799999999999997" r="4" fill="#64748b"/><line x1="24" y1="-4.800000000000001" x2="17.87" y2="8.34" stroke="#d97706" stroke-dasharray="3 3" opacity=".8"/><circle cx="17.87" cy="8.34" r="3" fill="#0d9488"/><circle cx="24" cy="-4.800000000000001" r="4" fill="#64748b"/><line x1="48" y1="-38.400000000000006" x2="24.72" y2="11.53" stroke="#d97706" stroke-dasharray="3 3" opacity=".8"/><circle cx="24.72" cy="11.53" r="3" fill="#0d9488"/><circle cx="48" cy="-38.400000000000006" r="4" fill="#64748b"/><line x1="72" y1="-36.0" x2="45.35" y2="21.15" stroke="#d97706" stroke-dasharray="3 3" opacity=".8"/><circle cx="45.35" cy="21.15" r="3" fill="#0d9488"/><circle cx="72" cy="-36.0" r="4" fill="#64748b"/></g><g transform="translate(375 100)"><path d="M-100 0H100 M0 -70V70" stroke="currentColor" opacity=".15" fill="none"/><line x1="-86.60" y1="50.00" x2="86.60" y2="-50.00" stroke="#0d9488" stroke-width="2"/><line x1="-72" y1="36.0" x2="-69.59" y2="40.18" stroke="#d97706" stroke-dasharray="3 3" opacity=".8"/><circle cx="-69.59" cy="40.18" r="3" fill="#0d9488"/><circle cx="-72" cy="36.0" r="4" fill="#64748b"/><line x1="-48" y1="38.400000000000006" x2="-52.63" y2="30.38" stroke="#d97706" stroke-dasharray="3 3" opacity=".8"/><circle cx="-52.63" cy="30.38" r="3" fill="#0d9488"/><circle cx="-48" cy="38.400000000000006" r="4" fill="#64748b"/><line x1="-24" y1="4.800000000000001" x2="-20.08" y2="11.59" stroke="#d97706" stroke-dasharray="3 3" opacity=".8"/><circle cx="-20.08" cy="11.59" r="3" fill="#0d9488"/><circle cx="-24" cy="4.800000000000001" r="4" fill="#64748b"/><line x1="-12.0" y1="16.799999999999997" x2="-16.27" y2="9.40" stroke="#d97706" stroke-dasharray="3 3" opacity=".8"/><circle cx="-16.27" cy="9.40" r="3" fill="#0d9488"/><circle cx="-12.0" cy="16.799999999999997" r="4" fill="#64748b"/><line x1="12.0" y1="-16.799999999999997" x2="16.27" y2="-9.40" stroke="#d97706" stroke-dasharray="3 3" opacity=".8"/><circle cx="16.27" cy="-9.40" r="3" fill="#0d9488"/><circle cx="12.0" cy="-16.799999999999997" r="4" fill="#64748b"/><line x1="24" y1="-4.800000000000001" x2="20.08" y2="-11.59" stroke="#d97706" stroke-dasharray="3 3" opacity=".8"/><circle cx="20.08" cy="-11.59" r="3" fill="#0d9488"/><circle cx="24" cy="-4.800000000000001" r="4" fill="#64748b"/><line x1="48" y1="-38.400000000000006" x2="52.63" y2="-30.38" stroke="#d97706" stroke-dasharray="3 3" opacity=".8"/><circle cx="52.63" cy="-30.38" r="3" fill="#0d9488"/><circle cx="48" cy="-38.400000000000006" r="4" fill="#64748b"/><line x1="72" y1="-36.0" x2="69.59" y2="-40.18" stroke="#d97706" stroke-dasharray="3 3" opacity=".8"/><circle cx="69.59" cy="-40.18" r="3" fill="#0d9488"/><circle cx="72" cy="-36.0" r="4" fill="#64748b"/></g><g fill="currentColor" font-size="13" text-anchor="middle"><text x="125" y="190">较小投影方差</text><text x="375" y="190">较大投影方差</text></g></svg>
+</figure>
+
 总之，回到正题。现在，我们优化的目标是这个式子：
 
 $$
 \begin{align*}
-\argmax_{u \in \mathbb{R}^{d}, \lVert u\rVert = 1}\frac{1}{n}\sum_{i=1}^{n} {(u^\top x^{(i)})}^{2}\\[1.4ex]
-=\argmax_{u \in \mathbb{R}^{d}, \lVert u\rVert = 1} u^\top\underbrace{\left( \frac{1}{n}\sum_{i=1}^{n} x^{(i)}(x^{(i)})^\top \right)}_{M} u
+&= \argmax_{u \in \mathbb{R}^{d}, \lVert u\rVert = 1}\frac{1}{n}\sum_{i=1}^{n} {(u^\top x^{(i)})}^{2}\\[1.4ex]
+&= \argmax_{u \in \mathbb{R}^{d}, \lVert u\rVert = 1} u^\top\underbrace{\left( \frac{1}{n}\sum_{i=1}^{n} x^{(i)}(x^{(i)})^\top \right)}_{M} u
 \end{align*}
 $$
 
 这里的 $M$ 是协方差矩阵。接下来我们说明为什么这一项是协方差矩阵。
+
+---
 
 #### 协方差矩阵
 
@@ -325,6 +334,7 @@ $$
 x^\top Ax = \sum_{j=1}^d\alpha_j^2 \lambda_j 
 $$
 
+> [!note]
 > 这段完全抄的 CS229，实际上有更简洁的写法：
 > 首先我们有
 > 
@@ -350,6 +360,7 @@ $$
 \max_{\alpha:\,\lVert\alpha\rVert^{2}=1}\sum_{j=1}^{d}\alpha_j^{2}\lambda_j
 $$
 
+> [!tip]
 > 从这里开始，我们才引入主成分的次序
 
 如何求最大值呢，显然我们只需要找到最大的主成分，这里不妨就称为 $\lambda_1$，由于
@@ -362,6 +373,7 @@ $$
 
 接着我们要递推确认剩下的主成分。以第二主成分为例，由于主成分之间是正交的，这意味着我们必须令 $\alpha_1 = 0$，重复上面的验证可知，这里只需令第二大特征值前面的系数为 $1$ 就可以了。进一步地，就一一对应了所有主成分。
 
+> [!tip]
 > 这里我们本质上是对特征值进行加权，把权重全给最大值肯定是最优解。严格的证明可以用拉格朗日乘子法，下面我们还会基于此给出一种新的推导方案。
 
 回到原式，
@@ -408,8 +420,7 @@ $$
 
 用拉格朗日乘子法，令
 $$
-\mathcal L(u,\lambda)= u^\top\Sigma u
--\lambda(u^\top u-1)
+\mathcal L(u,\lambda)= u^\top\Sigma u -\lambda(u^\top u-1)
 $$
 
 对 $u$ 求:tip[偏导]{info="这里略去矩阵求导的过程，作为补充，只需要知道矩阵求导本质上是对矩阵里的每一个标量做求导操作，最后得到了一套规律，实际上并没有更复杂的约定。"}并令其为零，得
@@ -440,19 +451,20 @@ $$
 
 -*-
 
-## PCA 算法的应用
+# PCA 算法的应用
 
 通过上述内容，我们证明了这样一件事情：
 
+> [!important]
 > 对协方差矩阵进行特征值分解，然后保留前 $k$ 大的特征值，取其特征向量$ u \in \mathbb R^d$，就得到了我们所关心的 $k$ 个主成分。
 
 接下来对 PCA 的实际应用做说明。
 
-### 数据中心化与标准化
+## 数据中心化与标准化
 
 在证明过程中，我们多次利用了“数据均值为零”这一条件。如果数据均值不为零，协方差矩阵不会自动出现在推导过程中。非中心化的数据会导致第一主成分表示“数据质心相对原点的偏移方向”，这与数据内部结构无关。不过，**非中心化 PCA(uncentered PCA)**会带给我们一些意外收获，在后面我们会讲述。
 
-除此之外，对于单位不同的数据（比如，用厘米表示的身高，用吨表示的体重），最大化投影方差可能会受到单位数量级的影响，这时我们应当进行 Z 标准化，除以数据标准差。
+除此之外，对于单位不同的数据（比如，用厘米表示的身高，用吨表示的体重），最大化投影方差可能会受到单位数量级的影响，这时我们应当进行 Z 标准化，额外除以数据标准差。
 
 > [!tip]
 > 值得注意的是，不是所有数据都要进行标准化。比如，对于基因表达谱而言，不同基因表达量不同可能反映了真实的生物学逻辑，而不是量纲有问题。
@@ -474,9 +486,9 @@ $$
 
 -*-
 
-### 方差贡献率与 Frobenius 范数
+## 方差贡献率与 Frobenius 范数
 
-#### 欧氏距离下的方差贡献率
+### 欧氏距离下的方差贡献率
 
 在很前面的地方，我们用欧氏距离定义了重构误差，对于 $k$ 个主成分，考虑样本平均意义下的重构误差
 
@@ -518,13 +530,16 @@ $$
 r_k=\frac{\lambda_k}{\sum_{i=1}^{d}\lambda_i}
 $$
 
+> [!note]
 > 一般我们称，第 $k$ 个主成分解释了数据总方差中 $r_k$ 的比例。
 
 前 $k$ 个的累计贡献率为 $R_k=\sum_{i=1}^{k}r_i$。
 
 可见，特征值线性地影响欧氏距离定义的重构误差，这意味着保留较大的特征值是有意义的。
 
-#### Frobenius 范数与 EVD 意义下的重构误差
+---
+
+### Frobenius 范数与 EVD 意义下的重构误差
 
 前面我们提到
 
@@ -544,6 +559,7 @@ $$
 \|A\|_F^2=\sum_{i,j}A_{ij}^2=\operatorname{tr}(A^\top A)
 $$
 
+> [!tip]
 > 尝试用 Frobenius 范数类比一维情况下的“向量模长”，本质上是该概念的拓展。你可以把下面的推导看成是在相同大小的矩阵空间（$d\times d$）中的勾股定理，勾股定理中的向量长度在这里变成了 Frobenius 范数。
 
 对于任意一个 $M_i=v_iv_i^\top$：
@@ -626,12 +642,13 @@ $$
 
 -*-
 
-### SVD 与 Uncentered PCA
+## SVD 与 Uncentered PCA
 
-#### SVD
+### SVD
 
 主播主播，先储存一个协方差矩阵然后做EVD确实很强，但是还是太吃内存了，有没有更加简单、更快捷的算法？
 
+> [!note]
 > 假设我们一个样本有 $20,000$ 个 features，就需要储存一个 $400,000,000$ 个元素的对称矩阵。
 
 因此，我们要用到一个重要的分解方法 **奇异值分解(SVD, Singular Value Decomposition)**。
@@ -667,7 +684,9 @@ $\Sigma = \frac{1}{n} X_c X_c^\top$
 
 而 SVD 告诉我们，这对应的正是左奇异向量和奇异值，$U$ 的列向量就是我们需要的特征向量，$\sqrt\sigma$ 就是我们需要的特征值。
 
-#### Uncentered PCA
+---
+
+### Uncentered PCA
 
 假设我们不对数据进行中心化操作，使用相同的方法会得到什么结果呢？
 
@@ -688,6 +707,7 @@ $$
 Mu=\lambda u
 $$
 
+> [!note]
 > 二阶矩 $M$ 由两部分组成
 >
 > $$
