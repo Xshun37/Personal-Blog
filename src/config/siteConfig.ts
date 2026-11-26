@@ -160,7 +160,7 @@ export const siteConfig: SiteConfig = {
 		// 网格模式的封面固定在卡片顶部，不受此项影响
 		coverPosition: "right",
 		// 文章简介显示行数，设为 0 则不截断
-		descriptionLines: 2,
+		descriptionLines: 3,
 		// 文章卡片底部统计和发布日期是否显示图标
 		showStatsIcons: true,
 		// 标签显示位置
@@ -180,7 +180,7 @@ export const siteConfig: SiteConfig = {
 			// 是否显示标签
 			showTags: true,
 			// 标签数量，设为 0 则不限制
-			tagCount: 0,
+			tagCount: 10,
 			// 是否显示字数
 			showWords: true,
 			// 是否显示阅读时间
